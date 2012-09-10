@@ -1,0 +1,2764 @@
+<HTML>
+<HEAD>
+<TITLE>Final Project -
+    CSCI 551, Spring 2012</TITLE>
+<LINK REV="made" HREF="mailto:bill.cheng@acm.org"></HEAD>
+<BODY BGCOLOR="#FFFFFF" LINK="#D02090" VLINK="#996600" ALINK="#990000">
+
+<TABLE BORDER=0 CELLPADDING=0 CELLSPACING=0 WIDTH=100%>
+<TR><TD ALIGN=CENTER VALIGN=TOP WIDTH=112>
+    <!-- COL 1, should be identical to all other pages here -->
+    <TABLE BORDER=0 CELLPADDING=0 CELLSPACING=0 WIDTH=113>
+    <TR><TD ALIGN=CENTER VALIGN=TOP WIDTH=112>
+        &nbsp;
+        </TD>
+    </TR>
+    <TR><TD ALIGN=CENTER VALIGN=TOP WIDTH=112>
+        <A HREF="http://www.cs.usc.edu/"><IMG SRC="../images/usctommy.gif"
+            ALT="USC CSD Home" BORDER=0></A>
+        <!-- BR>&nbsp;<BR -->
+        <!-- IMG SRC="images/small-uc.gif" BORDER=0 -->
+        </TD>
+    </TR>
+    </TABLE>
+    </TD>
+    <!-- TD ALIGN=LEFT VALIGN=TOP WIDTH=13 -->
+    <!-- COL 2, should be identical to all other pages here -->
+        <!-- IMG SRC="images/spacer.gif" HEIGHT=1 WIDTH=13 -->
+    <!-- /TD -->
+    <TD ALIGN=LEFT VALIGN=TOP>
+    <!-- COL 3, every page should be different -->
+        <TABLE BORDER=0>
+        <!-- Page Header -->
+        <TR><TD ALIGN=LEFT VALIGH=TOP>
+                <A HREF="../">Spring 2012            <TD ALIGN=RIGHT VALIGH=TOP>
+                <!-- A HREF="../">CSCI 551                <BR>TuTh Section</A -->
+                <A HREF="../">CSCI 551</A>
+            </TD>
+        </TR>
+        <BR>
+        <!-- Page Title -->
+        <TR><TD COLSPAN=3 ALIGN=CENTER>
+                <H2>Final Project</H2>
+                <H2>A Peer-to-Peer File Sharing System</H2>
+                <!--
+                <H4><FONT COLOR="red"><I>(This spec is subject to change
+                    without notice before end of day on
+                    9/17/2006.)</I></FONT></H4>
+                <H3><FONT COLOR="red"><I>(This spec is subject to change
+                    without notice until end of 2/14/2003.)</I></FONT></H3>
+                <H3><FONT COLOR="red"><I>(Under Construction -
+                    Anything Can Change without Notice)</I></FONT></H3>
+                  -->
+            </TD>
+        </TR>
+        <TR><TD COLSPAN=3 ALIGN=CENTER>&nbsp;</TD></TR>
+        <!-- Section -->
+        <TR><TD COLSPAN=3 ALIGN=LEFT BGCOLOR="#000000" WIDTH=1200>
+                <A NAME="deadlines">
+                <FONT COLOR="#ffffff"><B>Deadlines</B></FONT></A>
+            </TD>
+        </TR>
+        <!-- Top Section -->
+        <TR><TD COLSPAN=3 ALIGN=LEFT>
+Here are the deadlines:
+<DL COMPACT>
+<DT><DD>
+    <TABLE BORDER=1 CELLPADDING=0 CELLSPACING=0>
+    <TR><TD VALIGN=TOP><B>Part</B></TD>
+        <TD VALIGN=TOP><B>Due</B></TD>
+        <TD VALIGN=TOP><B>Percentage</B></TD>
+    </TR>
+    <TR><TD VALIGN=TOP>(1)</TD>
+        <TD VALIGN=TOP>11:45PM
+            3/25/2012</TD>
+        <TD VALIGN=TOP>45</TD>
+    </TR>
+    <TR><TD VALIGN=TOP>(2)</TD>
+        <TD VALIGN=TOP>11:45PM
+            4/20/2012</TD>
+        <TD VALIGN=TOP>35</TD>
+    </TR>
+    </TABLE>
+</DL>
+For part (1), you need to be able to demonstrate that you can
+handle
+<A HREF="#joinmsg"><B><TT>join</TT></B></A>,
+<A HREF="#hellomsg"><B><TT>hello</TT></B></A>,
+<A HREF="#keepalivemsg"><B><TT>keepalive</TT></B></A>,
+<A HREF="#notifymsg"><B><TT>notify</TT></B></A>,
+<A HREF="#checkmsg"><B><TT>check</TT></B></A>,
+and <A HREF="#statusmsg"><B><TT>status</TT></B></A> messages,
+as well as the formation of the SERVANT network and complete logging
+for the above message types.
+The only user commands a node must handle are the
+<A HREF="#shutdown"><B><TT>shutdown</TT></B></A>
+and the
+<A HREF="#status"><B><TT>status neighbors</TT></B></A> commands.
+
+<P>
+
+For part (2), you need to be able to demonstrate the you
+have implemented the whole spec.  Since part (2) depends on
+part (1), you should try to get part (1) done as solid
+as possible.
+
+<P>
+To make part (2) less dependent on part (1), it is not required that you
+have <A HREF="#joinmsg"><B><TT>join</TT></B></A> and
+<A HREF="#checkmsg"><B><TT>check</TT></B></A> working.  Moreover, if
+the <A HREF="#nocheck"><B>NoCheck=1</B></A> is specified in
+a node's <A HREF="#startup">startup configuration file</A>, the node
+should <B>disable</B> its <I>join</I> and <I>check</I> mechanisms
+completely.
+            </TD>
+        </TR>
+        <TR><TD COLSPAN=3 ALIGN=LEFT>&nbsp;</TD></TR>
+        <!-- Section -->
+        <TR><TD COLSPAN=3 ALIGN=LEFT BGCOLOR="#000000" WIDTH=1200>
+                <FONT COLOR="#ffffff"><A
+                NAME="faq"><B>FAQ</B></A></FONT>
+            </TD>
+        </TR>
+        <!-- Top Section -->
+        <TR><TD COLSPAN=3 ALIGN=LEFT>
+The <A HREF="f1-faq.html">part (1)</A> and
+<A HREF="f2-faq.html">part (2)</A> FAQ pages should be considered
+under constant construction.  They will be modified
+through out the semester.  If you have questions about the final project,
+please check the FAQ pages first because the answer you are looking
+for may be posted there already.
+            </TD>
+        </TR>
+        <TR><TD COLSPAN=3 ALIGN=LEFT>&nbsp;</TD></TR>
+        <!-- Section -->
+        <TR><TD COLSPAN=3 ALIGN=LEFT BGCOLOR="#000000" WIDTH=1200>
+                <FONT COLOR="#ffffff"><A
+                NAME="intro"><B>Introduction</B></A></FONT>
+            </TD>
+        </TR>
+        <!-- Top Section -->
+        <TR><TD COLSPAN=3 ALIGN=LEFT>
+In this project, each student will
+build a distributed file sharing system
+using peer-to-peer technology.  This system is referred to as
+the <B>SERVANT</B> and it is composed of a collection of nodes.
+Each node is part server and part client (<I>conceptually</I>, we will
+refer them as the server side and the client side of a node).
+A user can interact with the client side of a node via a commandline
+interface in order to perform various tasks within the SERVANT system.
+For example, a user can:
+
+<UL>
+<LI>store a file into the SERVANT
+    (not necessarily just on the server side of this particular SERVANT node,
+    i.e., the file gets replicated probabilistically)
+<LI>perform various types of searches
+<LI>retrieve files based on the result of a search
+<LI>delete a file from the SERVANT and destroy all (or most) copies of it
+</UL>
+
+This system is <B>peer-to-peer</B> in the sense that
+if one is using the system, one must be sharing his/her
+resources.
+            </TD>
+        </TR>
+        <TR><TD COLSPAN=3 ALIGN=LEFT>&nbsp;</TD></TR>
+        <!-- Section -->
+        <TR><TD COLSPAN=3 ALIGN=LEFT BGCOLOR="#000000" WIDTH=1200>
+                <FONT COLOR="#ffffff"><A
+                NAME="p2p"><B>Peer-to-Peer</B></A></FONT>
+            </TD>
+        </TR>
+        <!-- Top Section -->
+        <TR><TD COLSPAN=3 ALIGN=LEFT>
+The SERVANT distributed system is composed of an unknown
+number of nodes.
+The operational status of each node is generally unknown.
+A node only knows the IP addresses and port numbers of
+a small subset of all the nodes.  These are the <I>neighbors</I>
+of he node.
+When a node receives a file from one of its <I>neighbors</I>, it does
+<I>not</I> know where the file was originated.
+When a node receives a message from one of its neighbors, it does
+not know if the neighbor initiated the message or it is simply
+passing it along.
+
+<P>
+
+A set of nodes, know as <A HREF="#beacons"><I>beacon</I></A> nodes,
+forms the core of the SERVANT network.  Every node in the SERVANT
+network knows who the beacon nodes are (this knowledge is obtained
+from a node's start-up configuration file).
+
+<P>
+
+When a non-beacon node, say node X, wants to <I>join</I>
+the SERVANT network for the first time, it sends
+a request to a <I>beacon</I> node (which is, by definition,
+already part of the SERVANT network).
+This beacon node then floods the join request to the
+whole network.
+Every node in the network will compute its distance
+to node X and put this distance in the
+<A HREF="#distance"><TT>Distance</TT></A> field of its
+join response message.
+Node X then picks a subset of the nodes from
+the list (ones with the lowest <TT>Distance</TT> values)
+to be its <I>neighbors</I> and discard its knowledge about
+the rest of the nodes.  Node X then writes the list of neighbors
+to a <TT>init_neighbor_list</TT> file in its
+<A HREF="#homedir">home directory</A>
+so that the next time node X is started,
+it doesn't have to go through the join process (unless not
+enough of its neighbors are up).
+
+<P>
+
+When a node comes up, it should attempt to connect to
+all its neighbors (by reading the <TT>init_neighbor_list</TT>
+file).  The first message a node (say, node A) should send to
+its neighbor (say, node B) is a <TT>hello</TT> message to
+advertise its own hostname and <A HREF="#port">port number</A>.
+Please note that
+<I>neighbor</I> is a bi-directional relationship.  Therefore,
+when node B gets a <TT>hello</TT> message from node A, and
+node A is not currently node B's neighbor, node B should send
+a <TT>hello</TT> message to node A.
+
+<P>
+
+If there is no traffic from a node to one of its neighbors,
+the node must send a <TT>keepalive</TT> message so that its
+neighbor knows that it is still operating properly.
+
+<P>
+
+When a node loses connection with one of its neighbors,
+it is possible that it may be disconnect from the SERVANT
+network.  In order to make sure that it is still connected
+to the network, the node must intiatiate a connectivity check
+by flooding a <TT>check</TT> message.  If the <TT>check</TT>
+message cannot reach any beacon node, part of the network
+must have been disconnected from the core of the network.  This node
+must therefore rejoin the network (delete its <TT>init_neighbor_list</TT>
+file, gracefully shut itself down, and start itself again as if it has
+never been part of the network).  The flooding of
+<TT>check</TT> messages stops at a beacon node where the beacon
+node sends a <TT>check</TT> response message towards the
+node from which it received the <TT>check</TT> message.
+
+<P>
+
+Message forwarding (for messages of all types) is usually
+performed using a <A HREF="#routing"><I>flooding</I></A> algorithm.
+A response message must return via the same route as
+the corresponding request message to provide anonymity
+(protect the identity of the responding node
+and the requesting node).  Each message has a
+TTL (time-to-live) value and which is to be decremented when
+the message is forwarded.  If a TTL reaches 0, no forwarding
+should be performed.
+
+<P>
+
+Unlike Napster, there is no centralized catalog of files that is
+stored in the SERVANT.  The location where a file is stored
+is generally unknown.
+
+<P>
+
+As a file travels through the SERVANT network (when it is stored or
+retrieved), it may be cached at various nodes.  Each node is
+configured with a given cache size.  If a node decides to cache
+a file but it has exhausted its cache space, it should use the
+LRU method to determine what to purge from its cache.
+Part of a node's filesystem area is designated as <I>permanent</I>
+storage space.  Unlike the cache space, the <I>permanent</I> space is
+<I>not</I> subject to any replacement policy.
+If a file is to be
+stored in the permanent space of a node and there is not enough
+space in the filesystem, the file must be rejected.
+            </TD>
+        </TR>
+        <TR><TD COLSPAN=3 ALIGN=LEFT>&nbsp;</TD></TR>
+        <!-- Section -->
+        <TR><TD COLSPAN=3 ALIGN=LEFT BGCOLOR="#000000" WIDTH=1200>
+                <FONT COLOR="#ffffff"><A
+                NAME="basic"><B>Some Definitions and Operational
+                Requirements</B></A></FONT>
+            </TD>
+        </TR>
+        <!-- Top Section -->
+        <TR><TD COLSPAN=3 ALIGN=LEFT>
+&nbsp;<BR>
+
+<B><A NAME="nodeid">Node</A> ID:</B>
+
+<BLOCKQUOTE>
+    Each node is identified by a unique <I>node ID</I>
+    which is simply the concatenation of its hostname and its
+    port number (with an underscore character inserted between them).
+    For example, <B><TT>"merlot.usc.edu_16011"</TT></B> is a valid
+    Node ID.
+    You can call <TT>gethostname()</TT> to get the hostname of the machine you
+    are running on.
+</BLOCKQUOTE>
+
+<P>
+
+<B><A NAME="nodeinstid">Node</A> Instance ID:</B>
+
+<BLOCKQUOTE>
+    Every time a node is restarted, it is associated with a
+    <I>node instance ID</I>, which is
+    simply the concatenation of its node ID and the time the
+    node got started (with an underscore character inserted between them).
+    For example, <B><TT>"merlot.usc.edu_16011_1016320007"</TT></B> is a valid
+    node instance ID.  To get the time a node is started, please call the
+    <TT>time()</TT> function.
+</BLOCKQUOTE>
+
+<P>
+
+<B><A NAME="tiebreaking">Connections</A>:</B>
+
+<BLOCKQUOTE>
+    For the purpose of this project, you <I>must</I>
+    use the same socket for the connection from A to B and from B to A.
+    It is possible that A and B initiates a connection to each
+    other simultaneously.  You need to make sure that only
+    one bi-directional connection is setup.  In order to break
+    ties, you must compare the port numbers of nodes A and B.
+    Let <TT>PA</TT> and <TT>PB</TT> be the well-known port numbers of
+    nodes A and B, respectively.
+    If <TT>PA &gt; PB</TT>, you should keep the connection initiated by A.
+    If <TT>PA &lt; PB</TT>, you should keep the connection initiated by B.
+    If <TT>PA == PB</TT>, you should compare the hostnames of nodes A and B.
+    Let <TT>HA</TT> and <TT>HB</TT> be the hostnames (ASCII string) of
+    nodes A and B, respectively.  If
+  <PRE>
+  strcmp(HA, HB) &gt; 0</PRE>
+    you should keep the connection initiated by A.  If
+  <PRE>
+  strcmp(HA, HB) &lt; 0</PRE>
+    you should keep the connection initiated by B.
+  <P>
+  Please note that immediately after node A gets a connection from node B,
+  node A does not know the well-known port number of node B.
+  Node A must wait for the <TT>hello</TT> message from node B
+  in order to find out the well-known port number of node B.
+  <P>
+  Once a pair of <TT>hello</TT> messages have been exchanged
+  on a connection, this connection is considered to be operational
+  and regular messages can be sent or forwarded on this connection.
+  A node should drop all messages if it has not received a <TT>hello</TT>
+  message over a connection.  A node should also drop all message after
+  it has received a <TT>notify</TT> message over a connection.
+</BLOCKQUOTE>
+
+<P>
+
+<B><A NAME="autodown">Auto-shutdown</A>:</B>
+
+<BLOCKQUOTE>
+    When the <A HREF="#autoshutdown">auto-shutdown timer</A> goes off,
+    the situation should be very similar to auto-shutdown in
+    <A HREF="warmup1.html">warmup project #1</A>.
+    Your node should not accept any new connection;
+    your node should ask child threads to close their respective sockets
+    as soon as possible (they do not need to finish sending a message);
+    your node should wait for all child threads to terminate before it
+    can terminate itself.
+    You do <B>not</B> need to send <B>notify</B> messages in this case
+    (since you may not have finished sending the previous message).
+</BLOCKQUOTE>
+
+<P>
+
+<B><A NAME="init_neighbor_list"><TT>init_neighbor_list</TT></A> file:</B>
+
+<BLOCKQUOTE>
+    The <TT>init_neighbor_list</TT> file may be present in the 
+    <A HREF="#homedir">home directory</A> of a non-beacon node.
+    <P>
+    If this file is present, the corresponding node should
+    <I>participate</I> in the SERVANT network when it starts or restarts.
+    If this file is <I>not</I> present, the node should <I>join</I> the
+    SERVANT network when it starts or restarts.
+    <P>
+    This file is <I>write-once</I>.  Once it's created, it should never
+    be modified.  It gets created when the node joins the network
+    successfully.
+    <P>
+    When the node starts or restarts, if it is participating in the
+    SERVANT network and it cannot connect to
+    <A HREF="#minneighbors"><TT>MinNeighbors</TT></A> number of
+    nodes listed in this file, this file must be <I>deleted</I> and the node
+    should perform a soft-restart.
+    <P>
+    When the node quits, if this file is present, it must not be deleted.
+</BLOCKQUOTE>
+
+<P>
+
+<B><A NAME="nonce">Nonce</A> &amp; <A NAME="fileid">FileID</A>:</B>
+
+<BLOCKQUOTE>
+    A file is <I>created</I> into the SERVANT network via a
+    <A HREF="#user_store"><TT>store</TT> user command</A>.
+    At this time, the corresponding <A HREF="#metadata">file metadata</A>
+    is also created for this file.
+    A random 20-byte long <I>one-time password</I> is first
+    generated.  The SHA1 hash of the password is then computed
+    and is to be used as the <I>nonce</I> for this file.
+    A nonce can be used to
+    distinguish different versions of the same file.
+    (If a file with a certain SHA1 value is created by a user and,
+    at a later time, the same file
+    with the same SHA1 value is created by the same user or another user,
+    these 2 files will have different nonces.)
+    Therefore, we consider that file Y is a <B>copy</B> of file X if
+    X and Y have identical FileName, SHA1, and Nonce (everything
+    else about X and Y are assumed to be identical).
+
+    <P>
+
+    How does Y comes to existance?  Well, when X was
+    first introduced into the SERVANT network via a <TT>store</TT> user
+    command, copies of X got probabilistically flooded into the
+    rest of the SERVANT network (upto a TTL value).
+    So copies of X can be created.
+    Later on, when some node retrieves X or a copy of X, another
+    copy of X gets probabilistically copied on some nodes in the network,
+    so more copies of X can get created.  So, if X is a very
+    popular search target, there can be many many copies of X
+    in the entire network.  Now, if you search of X and get
+    many responses, and you only want one copy of X to be sent
+    to you, how do you only ask for one copy of X to be sent to
+    you?  This is where FileID comes in.
+
+    <P>
+
+    A FileID distinguishes one copy of X from another copy of X.
+    Since FileID only matters when a user enters a
+    <A HREF="#user_get"<TT>get</TT> user command</A>,
+    you only need to create a FileID if a corresponding
+    search reply was created.
+
+    <P>
+
+    In additional to distinguishing different versions of a file,
+    a <I>nonce</I> is needed to mitigate <I>replay attacks</I>.
+    Here is the scenario.  File X is stored by the user at node A.
+    Then X is <A HREF="#user_delete">deleted</A> by the user at node A.
+    Then X is again
+    stored by the user at node A.  Now anyone who has a copy of
+    the delete message and flood it back to the network and delete
+    all copies of X if a nonce was not used.
+</BLOCKQUOTE>
+            </TD>
+        </TR>
+        <TR><TD COLSPAN=3 ALIGN=LEFT>&nbsp;</TD></TR>
+        <!-- Section -->
+        <TR><TD COLSPAN=3 ALIGN=LEFT BGCOLOR="#000000" WIDTH=1200>
+                <FONT COLOR="#ffffff"><A
+                NAME="basic"><B>Summary of Basic Message Types</B></A></FONT>
+            </TD>
+        </TR>
+        <!-- Top Section -->
+        <TR><TD COLSPAN=3 ALIGN=LEFT>
+Below, we summarize the basic message types.
+
+<P>
+
+<TABLE BORDER=0 CELLPADDING=0 CELLSPACING=0 WIDTH=100%>
+<TR><TD ALIGN=LEFT VALIGN=TOP>(1)</TD>
+    <TD ALIGN=LEFT VALIGN=TOP>&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+    <TD ALIGN=LEFT VALIGN=TOP>
+        The <A NAME="joinmsg"><B><TT>join</TT></B></A>
+        message should be flooded to
+        the whole network (up to a specified TTL).  In response to a
+        <TT>join</TT> message, a node computes its distance (4-byte value)
+        to the requesting node and includes this distance in a join response
+        message.  The distance is simply the numeric difference between
+        the <A HREF="#location">location</A>
+        of this node and that of the joining node.
+        A joining node uses the responses to
+        determine who its neighbors shall be.  The node then writes
+        the list of neighbors to the <TT>init_neighbor_list</TT>
+        file in its home directory.  This message should be sent
+        only once, unless a node cannot connect to enough neighbors.
+        <P>
+        If a node knows who its neighbors are, when it comes up,
+        it connects to all its neighbors via TCP connections.
+        If not enough of its neighbors are up (according to the
+        value of the <A HREF="#minneighbors"><TT>MinNeighbors</TT></A>
+        setting in its start-up configuration file), the node should
+        delete the <TT>init_neighbor_list</TT> file and rejoin the network.
+    </TD>
+</TR>
+<TR><TD>&nbsp;</TD></TR>
+<TR><TD ALIGN=LEFT VALIGN=TOP>(2)</TD>
+    <TD ALIGN=LEFT VALIGN=TOP>&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+    <TD ALIGN=LEFT VALIGN=TOP>
+        The <A NAME="hellomsg"><B><TT>hello</TT></B></A>
+        message is used to introduce a node
+        (its hostname and its port number) to its immediate neighbor
+        so that the neighbor can talk back to this node.  A node should
+        send this message to its neighbors immediately after it comes
+        up (assuming it has done the orignal join/discovery process).
+        The <TT>TTL</TT> should be set to 1 for this message.
+    </TD>
+</TR>
+<TR><TD>&nbsp;</TD></TR>
+<TR><TD ALIGN=LEFT VALIGN=TOP>(3)</TD>
+    <TD ALIGN=LEFT VALIGN=TOP>&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+    <TD ALIGN=LEFT VALIGN=TOP>
+        The <A NAME="keepalivemsg"><B><TT>keepalive</TT></B></A>
+        message is used by a node to
+        inform its neighbor that it is still alive.  The reason why
+        this message is necessary is that if a node goes down abruptly,
+        TCP will not tell its neighbors that it has gone done.
+        The <TT>TTL</TT> should be set to 1 for this message.
+    </TD>
+</TR>
+<TR><TD>&nbsp;</TD></TR>
+<TR><TD ALIGN=LEFT VALIGN=TOP>(4)</TD>
+    <TD ALIGN=LEFT VALIGN=TOP>&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+    <TD ALIGN=LEFT VALIGN=TOP>
+        The <A NAME="notifymsg"><B><TT>notify</TT></B></A>
+        message is used by a node to
+        inform its neighbor that it is about to close the connection.
+        No more data should be expected on a connection once this
+        message is received.
+        The <TT>TTL</TT> should be set to 1 for this message.
+    </TD>
+</TR>
+<TR><TD>&nbsp;</TD></TR>
+<TR><TD ALIGN=LEFT VALIGN=TOP>(5)</TD>
+    <TD ALIGN=LEFT VALIGN=TOP>&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+    <TD ALIGN=LEFT VALIGN=TOP>
+        The <A NAME="checkmsg"><B><TT>check</TT></B></A>
+        message is used by a node to
+        see if it is still connected to the core of the SERVANT
+        network.  It should be flooded to the whole network
+        (up to a specified TTL).
+        <P>
+        A <TT>check</TT> response is initiated by a
+        <A HREF="#beacons">beacon node</A> to indicate that
+        the core of the network has been reached.
+    </TD>
+</TR>
+<TR><TD>&nbsp;</TD></TR>
+<TR><TD ALIGN=LEFT VALIGN=TOP>(6)</TD>
+    <TD ALIGN=LEFT VALIGN=TOP>&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+    <TD ALIGN=LEFT VALIGN=TOP>
+        The <A NAME="storemsg"><B><TT>store</TT></B></A>
+        message should be <I>probabilistically</I>
+        flooded to the whole network (up to a specified TTL).  It takes
+        a file and stores it in the server side of the node to which the user
+        is connected.  A file is tagged with various
+        <A HREF="#metadata">metadata</A>
+        such as file name, file size, and keywords.
+        The type of a file is identified by its file name extension.
+        A node that initiated a <TT>store</TT> for file <TT>F</TT> must store
+        file <TT>F</TT> in the permanent area and <I>not</I> in its cache.
+        If there is not enough space in the filesystem, this node
+        should <I>not</I> flood <B><TT>store</TT></B> messages.
+    </TD>
+</TR>
+<TR><TD>&nbsp;</TD></TR>
+<TR><TD ALIGN=LEFT VALIGN=TOP>(7)</TD>
+    <TD ALIGN=LEFT VALIGN=TOP>&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+    <TD ALIGN=LEFT VALIGN=TOP>
+        The <A NAME="searchmsg"><B><TT>search</TT></B></A>
+        message is to be flooded to
+        the whole network (up to a specified TTL).  The arguments
+        to this message depend on the type of search the user
+        wants to perform.  The search can be
+        based on keywords, the precise spelling of a file name,
+        or the precise <A HREF="#sha1">SHA1</A> hash of a file.
+        <P>
+        A <TT>search</TT> response may contain multiple records.
+        Each record contains the metadata of
+        a file plus a <A HREF="#fileid">FileID</A> which uniquely
+        identifies the file.
+        If a node generates a <TT>search</TT> response message
+        for a file in its cache, it should update the LRU order
+        of this file.
+    </TD>
+</TR>
+<TR><TD>&nbsp;</TD></TR>
+<TR><TD ALIGN=LEFT VALIGN=TOP>(8)</TD>
+    <TD ALIGN=LEFT VALIGN=TOP>&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+    <TD ALIGN=LEFT VALIGN=TOP>
+        The <A NAME="getmsg"><B><TT>get</TT></B></A>
+        message is to be flooded to the whole
+        network (up to a specified TTL) to retrieve a
+        file associated with a specific <A HREF="#fileid">FileID</A>.
+        <!--
+        This message must travel in the reversed direction of the path taken
+        by the corresponding <TT>search</TT> response.
+          -->
+        The response to
+        a <TT>get</TT> message contains the file matching with the requested
+        UOID and all its metadata.
+        <P>
+        If the user at node X attempts to retrieve file F and 
+        file F was successfully retrived,
+        node X must serve file F (i.e., respond properly to
+        future search messages).  File F should be stored in the
+        permanent area and <I>not</I> stored in its cache.
+        Intermediate nodes, i.e., nodes on the return path
+        of the <TT>get</TT> response message (other than the
+        originating and the final nodes) cache file F <I>probabilistically</I>.
+    </TD>
+</TR>
+<TR><TD>&nbsp;</TD></TR>
+<TR><TD ALIGN=LEFT VALIGN=TOP>(9)</TD>
+    <TD ALIGN=LEFT VALIGN=TOP>&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+    <TD ALIGN=LEFT VALIGN=TOP>
+        The <A NAME="statusmsg"><B><TT>status</TT></B></A>
+        message is to be flooded to
+        the whole network (up to a specified TTL).  An argument
+        is passed to this message specifying what type of
+        status needs to be reported.
+        <P>
+        A <TT>status</TT> response may contain multiple records.
+        <!--
+        When a node gets a status message, it should append
+        its status to a log file specified in its start-up configuration file.
+        Since the log file is shared (among nodes running on the same
+        machine), it must use <A HREF="flock.html"><TT>flock()</TT></A>
+        to lock the file before writing to it.
+        Before it writes the status information, it must write a header with the
+        UOID of the status message, the status type, and its
+        <A HREF="#nodeid">Node ID</A>.
+          -->
+    </TD>
+</TR>
+<TR><TD>&nbsp;</TD></TR>
+<TR><TD ALIGN=LEFT VALIGN=TOP>(10)</TD>
+    <TD ALIGN=LEFT VALIGN=TOP>&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+    <TD ALIGN=LEFT VALIGN=TOP>
+        The <A NAME="deletemsg"><B><TT>delete</TT></B></A>
+        message is to be flooded to the
+        whole network (up to a specified TTL).  It is used to delete
+        copies of a specified file from both permanent storage and
+        the cache.  A <I>one-time password</I> is used to authenticate
+        the originating node of the message.  Only the original
+        owner of the file (the one who stored the file in the SERVANT
+        originally) is allowed to delete it.
+    </TD>
+</TR>
+</TABLE>
+            </TD>
+        </TR>
+        <TR><TD COLSPAN=3 ALIGN=LEFT>&nbsp;</TD></TR>
+        <!-- Section -->
+        <TR><TD COLSPAN=3 ALIGN=LEFT BGCOLOR="#000000" WIDTH=1200>
+                <FONT COLOR="#ffffff"><A
+                NAME="format"><B>Message Format</B></A></FONT>
+            </TD>
+        </TR>
+        <!-- Top Section -->
+        <TR><TD COLSPAN=3 ALIGN=LEFT>
+All messages have a 27-byte common header depicted below:
+
+<DL COMPACT>
+<DT><DD>
+    <TABLE BORDER=1 CELLPADDING=0 CELLSPACING=0>
+    <TR><TD VALIGN=TOP><B>Byte Pos</B></TD>
+        <TD VALIGN=TOP><B>Name</B></TD>
+        <TD VALIGN=TOP><B>Description</B></TD>
+    </TR>
+    <TR><TD VALIGN=TOP>0</TD>
+        <TD VALIGN=TOP>MessageType</TD>
+        <TD VALIGN=TOP>The message type.  Please refer to the next table.</TD>
+    </TR>
+    <TR><TD VALIGN=TOP>1-20</TD>
+        <TD VALIGN=TOP>UOID</TD>
+        <TD VALIGN=TOP>Message ID.
+            This field is inserted by a message originating node and copied
+            by all forwarding nodes.
+            </TD>
+    </TR>
+    <TR><TD VALIGN=TOP>21</TD>
+        <TD VALIGN=TOP>TTL</TD>
+        <TD VALIGN=TOP>How many hops the message has left before it should be
+            dropped.</TD>
+    </TR>
+    <TR><TD VALIGN=TOP>22</TD>
+        <TD VALIGN=TOP>(Reserved)</TD>
+        <TD VALIGN=TOP>
+            (always zero)
+            </TD>
+    </TR>
+    <TR><TD VALIGN=TOP>23-26</TD>
+        <TD VALIGN=TOP>Data Length</TD>
+        <TD VALIGN=TOP>The length of the function-dependent data.</TD>
+    </TR>
+    </TABLE>
+</DL>
+
+<P>
+
+The first byte of the header is the message type.
+Bytes 1 through 20
+correspond to a unique object ID (<A HREF="#uoid">UOID</A>)
+which identifies
+the message.
+
+<P>
+
+If a node is forwarding (via flooding) a message with a particular UOID,
+it must check to see if a message with the same UOID has been seen before.
+If it hasn't seen the message, it should not generate a new UOID for the
+forwarded message but copy the UOID from the received message onto the
+forwarded messages.  Otherwise, the message should be dropped.
+Please note that this implies that a node must store <I>all</I> UOIDs it has
+<I>ever</I> seen until the message expires (please see
+<A HREF="#msglifetime">MsgLifetime</A> regarding message expiration).
+
+<P>
+
+Byte 21 is the TTL.  For every message you receive, you should decrement
+the TTL and pass the message on if the TTL is still greater than zero.
+If you are <B>forwarding</B> a message (of <B>any</B> type), the only
+thing you can change in the message is the TTL.  You must <B>not</B> change
+anything else in the message!
+
+<P>
+
+The last field of the header indicates how large the type-dependent
+data that follows it is.  All numeric fields should be in
+<A HREF="byteorder.html"><I>network byte order</I></A>.
+All string fields should <B>not</B> be terminated by a null character.
+
+<P>
+
+Below, we define the all the type-dependent message formats:
+
+<DL COMPACT>
+<DT><DD>
+
+    <DL COMPACT>
+    <DT><B>join message (MessageType=0xFC)</B><DD>
+        <P>
+        <TABLE BORDER=1 CELLPADDING=0 CELLSPACING=0>
+        <TR><TD VALIGN=TOP><B>Byte Pos</B></TD>
+            <TD VALIGN=TOP><B>Name</B></TD>
+            <TD VALIGN=TOP><B>Description</B></TD>
+        </TR>
+        <TR><TD VALIGN=TOP>27-30</TD>
+            <TD VALIGN=TOP>Host Location</TD>
+            <TD VALIGN=TOP>Location of the requesting host.
+                </TD>
+        </TR>
+        <TR><TD VALIGN=TOP>31-32</TD>
+            <TD VALIGN=TOP>Host Port</TD>
+            <TD VALIGN=TOP>TCP port number of the requesting host.
+                </TD>
+        </TR>
+        <TR><TD VALIGN=TOP>33+</TD>
+            <TD VALIGN=TOP>Hostname</A></TD>
+            <TD VALIGN=TOP>The hostname (not IP address) of the requesting
+                host.</TD>
+        </TR>
+        </TABLE>
+    </DL>
+
+    <P>
+
+    <DL COMPACT>
+    <DT><B>join response message (MessageType=0xFB)</B><DD>
+        <P>
+        <TABLE BORDER=1 CELLPADDING=0 CELLSPACING=0>
+        <TR><TD VALIGN=TOP><B>Byte Pos</B></TD>
+            <TD VALIGN=TOP><B>Name</B></TD>
+            <TD VALIGN=TOP><B>Description</B></TD>
+        </TR>
+        <TR><TD VALIGN=TOP>27-46</TD>
+            <TD VALIGN=TOP>UOID</TD>
+            <TD VALIGN=TOP>The join UOID that this message is responding to.
+                </TD>
+        </TR>
+        <TR><TD VALIGN=TOP>47-50</TD>
+            <TD VALIGN=TOP><A NAME="distance">Distance</A></TD>
+            <TD VALIGN=TOP>Distance to the node requesting to join.
+                This is a 4-byte long numeric field.
+            </TD>
+        </TR>
+        <TR><TD VALIGN=TOP>51-52</TD>
+            <TD VALIGN=TOP>Host Port</TD>
+            <TD VALIGN=TOP>TCP port number of the listening host.</TD>
+        </TR>
+        <TR><TD VALIGN=TOP>53+</TD>
+            <TD VALIGN=TOP>Hostname</TD>
+            <TD VALIGN=TOP>The hostname (not IP address) of the listening
+                host.</TD>
+        </TR>
+        </TABLE>
+    </DL>
+
+    <P>
+
+    <DL COMPACT>
+    <DT><B>hello message (MessageType=0xFA)</B><DD>
+        <P>
+        <TABLE BORDER=1 CELLPADDING=0 CELLSPACING=0>
+        <TR><TD VALIGN=TOP><B>Byte Pos</B></TD>
+            <TD VALIGN=TOP><B>Name</B></TD>
+            <TD VALIGN=TOP><B>Description</B></TD>
+        </TR>
+        <TR><TD VALIGN=TOP>27-28</TD>
+            <TD VALIGN=TOP>Host Port</TD>
+            <TD VALIGN=TOP>TCP port number of the sending host.
+                </TD>
+        </TR>
+        <TR><TD VALIGN=TOP>29+</TD>
+            <TD VALIGN=TOP>Hostname</A></TD>
+            <TD VALIGN=TOP>The hostname (not IP address) of the sending
+                host.</TD>
+        </TR>
+        </TABLE>
+    </DL>
+
+    <P>
+
+    <DL COMPACT>
+    <DT><B>keepalive message (MessageType=0xF8)</B><DD>
+        <P>
+        This message has an empty body (Data Length = 0).
+    </DL>
+
+    <P>
+
+    <DL COMPACT>
+    <DT><B>notify message (MessageType=0xF7)</B><DD>
+        <P>
+        <TABLE BORDER=1 CELLPADDING=0 CELLSPACING=0>
+        <TR><TD VALIGN=TOP><B>Byte Pos</B></TD>
+            <TD VALIGN=TOP><B>Name</B></TD>
+            <TD VALIGN=TOP><B>Description</B></TD>
+        </TR>
+        <TR><TD VALIGN=TOP>27</TD>
+            <TD VALIGN=TOP>Error Code</TD>
+            <TD VALIGN=TOP>(see below)</TD>
+        </TR>
+        </TABLE>
+        <P>
+        The possible values for Error Code are:
+        <BLOCKQUOTE>
+            <TABLE BORDER=0 CELLPADDING=0 CELLSPACING=0>
+            <TR><TD VALIGN=TOP>0</TD>
+                <TD VALIGN=TOP>&nbsp;:&nbsp;</TD>
+                <TD VALIGN=TOP>unknown</TD>
+            </TR>
+            <TR><TD VALIGN=TOP>1</TD>
+                <TD VALIGN=TOP>&nbsp;:&nbsp;</TD>
+                <TD VALIGN=TOP>user shutdown</TD>
+            </TR>
+            <TR><TD VALIGN=TOP>2</TD>
+                <TD VALIGN=TOP>&nbsp;:&nbsp;</TD>
+                <TD VALIGN=TOP>unexpected kill signal received</TD>
+            </TR>
+            <TR><TD VALIGN=TOP>3</TD>
+                <TD VALIGN=TOP>&nbsp;:&nbsp;</TD>
+                <TD VALIGN=TOP>self-restart</TD>
+            </TR>
+            </TABLE>
+        </BLOCKQUOTE>
+        <P>
+    </DL>
+
+    <P>
+
+    <DL COMPACT>
+    <DT><B>check message (MessageType=0xF6)</B><DD>
+        <P>
+        This message has an empty body (Data Length = 0).
+    </DL>
+
+    <P>
+
+    <DL COMPACT>
+    <DT><B>check response message (MessageType=0xF5)</B><DD>
+        <P>
+        <TABLE BORDER=1 CELLPADDING=0 CELLSPACING=0>
+        <TR><TD VALIGN=TOP><B>Byte Pos</B></TD>
+            <TD VALIGN=TOP><B>Name</B></TD>
+            <TD VALIGN=TOP><B>Description</B></TD>
+        </TR>
+        <TR><TD VALIGN=TOP>27-46</TD>
+            <TD VALIGN=TOP>UOID</TD>
+            <TD VALIGN=TOP>This should match the UOID in the
+                corresponding <TT>check</TT> message header.
+                </TD>
+        </TR>
+        </TABLE>
+    </DL>
+
+    <P>
+
+    <DL COMPACT>
+    <DT><B>search message (MessageType=0xEC)</B><DD>
+        <P>
+        <TABLE BORDER=1 CELLPADDING=0 CELLSPACING=0>
+        <TR><TD VALIGN=TOP><B>Byte Pos</B></TD>
+            <TD VALIGN=TOP><B>Name</B></TD>
+            <TD VALIGN=TOP><B>Description</B></TD>
+        </TR>
+        <TR><TD VALIGN=TOP>27</TD>
+            <TD VALIGN=TOP>Search Type</TD>
+            <TD VALIGN=TOP>If the search type is 1, the next field contains
+                an exact file name.
+                If the search type is 2, the next field contains
+                an exact SHA1 hash value (not hexstring-encoded).
+                If the search type is 3, the next field contains
+                a list of keywords (separated by space characters).
+                </TD>
+        </TR>
+        <TR><TD VALIGN=TOP>28+</TD>
+            <TD VALIGN=TOP>Query</TD>
+            <TD VALIGN=TOP>The content of this field depends on the search type.
+                </TD>
+        </TR>
+        </TABLE>
+    </DL>
+
+    <P>
+
+    <DL COMPACT>
+    <DT><B>search response message (MessageType=0xEB)</B><DD>
+        <P>
+        <TABLE BORDER=1 CELLPADDING=0 CELLSPACING=0>
+        <TR><TD VALIGN=TOP><B>Byte Pos</B></TD>
+            <TD VALIGN=TOP><B>Name</B></TD>
+            <TD VALIGN=TOP><B>Description</B></TD>
+        </TR>
+        <TR><TD VALIGN=TOP>27-46</TD>
+            <TD VALIGN=TOP>UOID</TD>
+            <TD VALIGN=TOP>This should match the UOID in the
+                corresponding <TT>search</TT> message header.
+                </TD>
+        </TR>
+        <TR><TD VALIGN=TOP>47-50</TD>
+            <TD VALIGN=TOP>Next Length</TD>
+            <TD VALIGN=TOP>The length of the <TT>Metadata</TT> field.
+                If this field is not zero, another length field will follow
+                the next descriptor.
+                </TD>
+        </TR>
+        <TR><TD VALIGN=TOP>51-70</TD>
+            <TD VALIGN=TOP><A HREF="#fileid">FileID</A></TD>
+            <TD VALIGN=TOP>A UOID that identifies a file.
+                </TD>
+        </TR>
+        <TR><TD VALIGN=TOP>71+</TD>
+            <TD VALIGN=TOP><TT>Metadata</TT></TD>
+            <TD VALIGN=TOP><A HREF="#metadata"><TT>File Metadata</TT></A>.
+                </TD>
+        </TR>
+        </TABLE>
+        <P>
+        A search response message may contain multiple records.
+        For example, the following search response message
+        contains 3 records:
+        <BLOCKQUOTE>
+            UOID<BR>
+            NextLength1 (= length of Metadata1)<BR>
+            FileID1<BR>
+            Metadata1<BR>
+            NextLength2 (= length of Metadata2)<BR>
+            FileID2<BR>
+            Metadata2<BR>
+            NextLength3 (= 0)<BR>
+            FileID3<BR>
+            Metadata3
+        </BLOCKQUOTE>
+        The length of Metadata3 can be calculated from the
+        Data Length field of the common message header.
+    </DL>
+
+    <P>
+
+    <DL COMPACT>
+    <DT><B>get message (MessageType=0xDC)</B><DD>
+        <P>
+        <TABLE BORDER=1 CELLPADDING=0 CELLSPACING=0>
+        <TR><TD VALIGN=TOP><B>Byte Pos</B></TD>
+            <TD VALIGN=TOP><B>Name</B></TD>
+            <TD VALIGN=TOP><B>Description</B></TD>
+        </TR>
+        <TR><TD VALIGN=TOP>27-46</TD>
+            <TD VALIGN=TOP>FileID</TD>
+            <TD VALIGN=TOP>A UOID that identifies a file.
+                </TD>
+        </TR>
+        <TR><TD VALIGN=TOP>47-66</TD>
+            <TD VALIGN=TOP>SHA1</TD>
+            <TD VALIGN=TOP>SHA1 hash value of the file with the above FileID.
+                </TD>
+        </TR>
+        </TABLE>
+    </DL>
+
+    <P>
+
+    <DL COMPACT>
+    <DT><B>get response message (MessageType=0xDB)</B><DD>
+        <P>
+        <TABLE BORDER=1 CELLPADDING=0 CELLSPACING=0>
+        <TR><TD VALIGN=TOP><B>Byte Pos</B></TD>
+            <TD VALIGN=TOP><B>Name</B></TD>
+            <TD VALIGN=TOP><B>Description</B></TD>
+        </TR>
+        <TR><TD VALIGN=TOP>27-46</TD>
+            <TD VALIGN=TOP>UOID</TD>
+            <TD VALIGN=TOP>This should match the UOID in the
+                corresponding <TT>get</TT> message header.
+                </TD>
+        </TR>
+        <TR><TD VALIGN=TOP>47-50</TD>
+            <TD VALIGN=TOP>Metadata Length</TD>
+            <TD VALIGN=TOP>Length of the <TT>Metadata</TT> field.
+                </TD>
+        </TR>
+        <TR><TD VALIGN=TOP>51+</TD>
+            <TD VALIGN=TOP><TT>Metadata</TT></TD>
+            <TD VALIGN=TOP><A HREF="#metadata"><TT>File Metadata</TT></A>.
+                </TD>
+        </TR>
+        <TR><TD VALIGN=TOP>(?)+</TD>
+            <TD VALIGN=TOP>File Data</TD>
+            <TD VALIGN=TOP>The actual file.
+                A node receiving this message
+                must compute the SHA1 hash value of the file and
+                compare it against the stored file description.
+                If it does not match, the file should be discarded.
+                </TD>
+        </TR>
+        </TABLE>
+    </DL>
+
+    <P>
+
+    <DL COMPACT>
+    <DT><B>store message (MessageType=0xCC)</B><DD>
+        <P>
+        <TABLE BORDER=1 CELLPADDING=0 CELLSPACING=0>
+        <TR><TD VALIGN=TOP><B>Byte Pos</B></TD>
+            <TD VALIGN=TOP><B>Name</B></TD>
+            <TD VALIGN=TOP><B>Description</B></TD>
+        </TR>
+        <TR><TD VALIGN=TOP>27-30</TD>
+            <TD VALIGN=TOP>Metadata Length</TD>
+            <TD VALIGN=TOP>Length of the <TT>Metadata</TT> field.
+                </TD>
+        </TR>
+        <TR><TD VALIGN=TOP>31+</TD>
+            <TD VALIGN=TOP><TT>Metadata</TT></TD>
+            <TD VALIGN=TOP><A HREF="#metadata"><TT>File Metadata</TT></A>.
+                </TD>
+        </TR>
+        <TR><TD VALIGN=TOP>(?)+</TD>
+            <TD VALIGN=TOP>File Data</TD>
+            <TD VALIGN=TOP>The actual file.
+                A node receiving this message
+                must compute the SHA1 hash value of the file and
+                compare it against the stored file description.
+                If it does not match, the file should be discarded.
+                </TD>
+        </TR>
+        </TABLE>
+    </DL>
+
+    <P>
+
+    <DL COMPACT>
+    <DT><B>delete message (MessageType=0xBC)</B><DD>
+        <P>
+        <TABLE BORDER=1 CELLPADDING=0 CELLSPACING=0>
+        <TR><TD VALIGN=TOP><B>Byte Pos</B></TD>
+            <TD VALIGN=TOP><B>Name</B></TD>
+            <TD VALIGN=TOP><B>Description</B></TD>
+        </TR>
+        <TR><TD VALIGN=TOP>27+</TD>
+            <TD VALIGN=TOP><A NAME="filespec">File Spec</A></TD>
+            <TD VALIGN=TOP>
+                The <I>File Spec</I> is a specification for the file
+                to delete.  The spec should contain 4 lines:
+  <PRE>
+  FileName=foo
+  SHA1=63de...
+  Nonce=fcca...
+  Password=bac9...</PRE>
+                The lines are separated by
+                &lt;CR&gt;&lt;LF&gt; (i.e., "\r\n").
+                </TD>
+        </TR>
+        </TABLE>
+    </DL>
+
+    <P>
+
+    <DL COMPACT>
+    <DT><B>status message (MessageType=0xAC)</B><DD>
+        <P>
+        <TABLE BORDER=1 CELLPADDING=0 CELLSPACING=0>
+        <TR><TD VALIGN=TOP><B>Byte Pos</B></TD>
+            <TD VALIGN=TOP><B>Name</B></TD>
+            <TD VALIGN=TOP><B>Description</B></TD>
+        </TR>
+        <TR><TD VALIGN=TOP>27</TD>
+            <TD VALIGN=TOP>Status Type</TD>
+            <TD VALIGN=TOP>Status type to report.
+                <TT>0x01</TT> means the <TT>neighbors</TT> information
+                should be sent in the reply
+                <TT>0x02</TT> means the <TT>files</TT> information
+                should be sent in the reply.
+                <!--
+                <P>
+                If the type is <TT>neighbors</TT>, the hostname and
+                port number of each neighbor should be written
+                into the log file.
+                <P>
+                If the type is <TT>files</TT>, the description of
+                all the files stored on this node should be written
+                to the log file.
+                <P>
+                If the type is <TT>all</TT>, all of the above information
+                should be written to the log file.
+                  -->
+                </TD>
+        </TR>
+        </TABLE>
+    </DL>
+
+    <P>
+
+    <DL COMPACT>
+    <DT><B>status response message (MessageType=0xAB)</B><DD>
+
+        <P>
+
+        <I>(It should be clear from the content of the status response
+        message that in a real system, <TT>status</TT>
+        messages should be privileged to preserve anonymity.
+        You are asked to implement them to ease grading.
+        Therefore, it is imperitive that they work properly.)</I>
+
+        <P>
+
+        <TABLE BORDER=1 CELLPADDING=0 CELLSPACING=0>
+        <TR><TD VALIGN=TOP><B>Byte Pos</B></TD>
+            <TD VALIGN=TOP><B>Name</B></TD>
+            <TD VALIGN=TOP><B>Description</B></TD>
+        </TR>
+        <TR><TD VALIGN=TOP>27-46</TD>
+            <TD VALIGN=TOP>UOID</TD>
+            <TD VALIGN=TOP>This should match the UOID in the
+                corresponding <TT>status</TT> message header.
+                </TD>
+        </TR>
+        <TR><TD VALIGN=TOP>47-48</TD>
+            <TD VALIGN=TOP>Host Info Length</TD>
+            <TD VALIGN=TOP>
+                The length of the <TT>Host Port</TT> plus
+                <TT>Hostname</TT> fields that immediately follow
+                this field.</TD>
+        </TR>
+        <TR><TD VALIGN=TOP>49-50</TD>
+            <TD VALIGN=TOP>Host Port</TD>
+            <TD VALIGN=TOP>TCP port number of the replying host.</TD>
+        </TR>
+        <TR><TD VALIGN=TOP>51+</TD>
+            <TD VALIGN=TOP>Hostname</TD>
+            <TD VALIGN=TOP>The hostname (not IP address) of the replying
+                host.</TD>
+        </TR>
+        <TR><TD VALIGN=TOP>(?)+</TD>
+            <TD VALIGN=TOP>Record Length</TD>
+            <TD VALIGN=TOP>The length of the <TT>Data</TT> field.
+                If this field is not zero, another length field will
+                follow the <TT>Data</TT> field.
+                This is a 4-byte long numeric field.
+                (This field should be omitted if the request type is
+                <TT>files</TT> and no file is stored at the sender node.)
+                </TD>
+        </TR>
+        <TR><TD VALIGN=TOP>(?)+</TD>
+            <TD VALIGN=TOP>Data</TD>
+            <TD VALIGN=TOP>This field depends on the type of status being
+                requested.
+                (This field should be omitted if the request type is
+                <TT>files</TT> and no file is stored at the sender node.)
+                </TD>
+        </TR>
+        </TABLE>
+
+        <P>
+
+        If the status request type is <TT>neighbors</TT>, each <TT>Data</TT>
+        field contains:
+
+        <BLOCKQUOTE>
+        <TABLE BORDER=1 CELLPADDING=0 CELLSPACING=0>
+        <TR><TD VALIGN=TOP>(?)+&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+            <TD VALIGN=TOP>Host Port</TD>
+            <TD VALIGN=TOP>TCP port number of a neighboring host.</TD>
+        </TR>
+        <TR><TD VALIGN=TOP>(?)+&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+            <TD VALIGN=TOP>Hostname</TD>
+            <TD VALIGN=TOP>The hostname (not IP address) of a neighboring
+                host.</TD>
+        </TR>
+        </TABLE>
+        </BLOCKQUOTE>
+
+        <P>
+
+        If the status request type is <TT>files</TT>, each <TT>Data</TT>
+        field contains:
+
+        <BLOCKQUOTE>
+        <TABLE BORDER=1 CELLPADDING=0 CELLSPACING=0>
+        <TR><TD VALIGN=TOP>(?)+&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+            <TD VALIGN=TOP><TT>Metadata</TT></TD>
+            <TD VALIGN=TOP><A HREF="#metadata"><TT>File Metadata</TT></A>.
+                </TD>
+        </TR>
+        </TABLE>
+        </BLOCKQUOTE>
+
+        A status response message may contain multiple records.
+        For example, the following status response message
+        contains 3 records:
+        <BLOCKQUOTE>
+            UOID<BR>
+            HostInfoLength<BR>
+            HostPort<BR>
+            Hostname<BR>
+            RecordLength1 (= length of Data1)<BR>
+            Data1<BR>
+            RecordLength2 (= length of Data2)<BR>
+            Data2<BR>
+            RecordLength3 (= 0)<BR>
+            Data3
+        </BLOCKQUOTE>
+        The length of Data3 can be calculated from the
+        Data Length field of the common message header.
+    </DL>
+</DL>
+<P>
+Please note that although action needs to be taken,
+there is no need to respond to either a <B>keepalive</B>,
+<B>notify</B>, <B>store</B>, or <B>delete</B> message.
+            </TD>
+        </TR>
+        <TR><TD COLSPAN=3 ALIGN=LEFT>&nbsp;</TD></TR>
+        <!-- Section -->
+        <TR><TD COLSPAN=3 ALIGN=LEFT BGCOLOR="#000000" WIDTH=1200>
+                <FONT COLOR="#ffffff"><A
+                NAME="logging"><B>Logging</B></A></FONT>
+            </TD>
+        </TR>
+        <!-- Top Section -->
+        <TR><TD COLSPAN=3 ALIGN=LEFT>
+You must log all messages seen at a node and all messages
+sent by a node into its log file.  For each message <I>received</I>,
+<I>forwarded</I>, or <I>sent</I>, the following log entry (each in
+one line) must be appended, respectively:
+
+  <PRE>
+  r &lt;time&gt; &lt;from&gt; &lt;msgtype&gt; &lt;size&gt; &lt;ttl&gt; &lt;msgid&gt; &lt;data&gt;
+  f &lt;time&gt; &lt;to&gt; &lt;msgtype&gt; &lt;size&gt; &lt;ttl&gt; &lt;msgid&gt; &lt;data&gt;
+  s &lt;time&gt; &lt;to&gt; &lt;msgtype&gt; &lt;size&gt; &lt;ttl&gt; &lt;msgid&gt; &lt;data&gt;</PRE>
+
+<P>
+
+The <TT>&lt;time&gt;</TT> field has the format
+<TT>("%10ld.%03d",sec,millisec)</TT>.
+This is the "wall clock" value returned by <TT>gettimeofday()</TT>.
+
+<P>
+
+The <TT>&lt;from&gt;</TT> and <TT>&lt;to&gt;</TT> fields contain
+a node ID of a neighbor.
+"Neighbor" here includes the "temporary" neighbor (i.e., a joining node)
+of a beacon node.
+
+<P>
+
+The <TT>&lt;msgtype&gt;</TT> field is a 4-character long string
+representing the type of a message.  What goes into the <TT>&lt;data&gt;</TT>
+field depends on what type the message is.  Their relationship is
+shown in the following table:
+
+<DL COMPACT>
+<DT><DD>
+    <TABLE BORDER=1 CELLPADDING=0 CELLSPACING=0>
+    <TR><TD VALIGN=TOP><B><TT>&lt;msgtype&gt;</TT>&nbsp;</B></TD>
+        <TD VALIGN=TOP><B>description&nbsp;</B></TD>
+        <TD VALIGN=TOP><B><TT>&lt;data&gt;</TT>&nbsp;</B></TD>
+    </TR>
+    <TR><TD VALIGN=TOP>JNRQ</TD>
+        <TD VALIGN=TOP>join request</TD>
+        <TD VALIGN=TOP>&lt;port&gt; &lt;hostname&gt;</TD>
+    </TR>
+    <TR><TD VALIGN=TOP>JNRS</TD>
+        <TD VALIGN=TOP>join response</TD>
+        <TD VALIGN=TOP>&lt;uoid&gt; &lt;distance&gt; &lt;port&gt;
+            &lt;hostname&gt;</TD>
+    </TR>
+    <TR><TD VALIGN=TOP>HLLO</TD>
+        <TD VALIGN=TOP>hello</TD>
+        <TD VALIGN=TOP>&lt;port&gt; &lt;hostname&gt;</TD>
+    </TR>
+    <TR><TD VALIGN=TOP>KPAV</TD>
+        <TD VALIGN=TOP>keepalive</TD>
+        <TD VALIGN=TOP><I>(none)</I></TD>
+    </TR>
+    <TR><TD VALIGN=TOP>NTFY</TD>
+        <TD VALIGN=TOP>notify</TD>
+        <TD VALIGN=TOP>&lt;errorcode&gt;</TD>
+    </TR>
+    <TR><TD VALIGN=TOP>CKRQ</TD>
+        <TD VALIGN=TOP>check request</TD>
+        <TD VALIGN=TOP><I>(none)</I></TD>
+    </TR>
+    <TR><TD VALIGN=TOP>CKRS</TD>
+        <TD VALIGN=TOP>check response</TD>
+        <TD VALIGN=TOP>&lt;uoid&gt;</TD>
+    </TR>
+    <TR><TD VALIGN=TOP>SHRQ</TD>
+        <TD VALIGN=TOP>search request</TD>
+        <TD VALIGN=TOP>&lt;searchtype&gt; &lt;query&gt;</TD>
+    </TR>
+    <TR><TD VALIGN=TOP>SHRS</TD>
+        <TD VALIGN=TOP>search response</TD>
+        <TD VALIGN=TOP>&lt;uoid&gt;</TD>
+    </TR>
+    <TR><TD VALIGN=TOP>GTRQ</TD>
+        <TD VALIGN=TOP>get request</TD>
+        <TD VALIGN=TOP>&lt;fileid&gt;</TD>
+    </TR>
+    <TR><TD VALIGN=TOP>GTRS</TD>
+        <TD VALIGN=TOP>get response</TD>
+        <TD VALIGN=TOP>&lt;uoid&gt;</TD>
+    </TR>
+    <TR><TD VALIGN=TOP>STOR</TD>
+        <TD VALIGN=TOP>store</TD>
+        <TD VALIGN=TOP><I>(none)</I></TD>
+    </TR>
+    <TR><TD VALIGN=TOP>DELT</TD>
+        <TD VALIGN=TOP>delete</TD>
+        <TD VALIGN=TOP><I>(none)</I></TD>
+    </TR>
+    <TR><TD VALIGN=TOP>STRQ</TD>
+        <TD VALIGN=TOP>status request</TD>
+        <TD VALIGN=TOP>&lt;statustype&gt;</TD>
+    </TR>
+    <TR><TD VALIGN=TOP>STRS</TD>
+        <TD VALIGN=TOP>status response</TD>
+        <TD VALIGN=TOP>&lt;uoid&gt;</TD>
+    </TR>
+    </TABLE>
+</DL>
+
+The <TT>&lt;size&gt;</TT> field should account for the message header
+and the message body (basically common header length plus data length).
+
+<P>
+
+Although a message ID is 20 bytes long, you only need to log the
+last 4 bytes in hex string format in the <TT>&lt;msgid&gt;</TT> field.
+The same goes with <TT>&lt;uoid&gt;</TT> and <TT>&lt;fileid&gt;</TT>
+values in the <TT>&lt;data&gt;</TT> field.
+
+<P>
+
+The <TT>&lt;searchtype&gt;</TT> can be "filename", "sha1hash", or
+"keywords".
+
+<P>
+
+The <TT>&lt;statustype&gt;</TT> can be "neighbors" or "files".
+
+<P>
+
+If a received message is forwarded to <I>n</I> different neighbors,
+you must enter <I>n</I> forwarded log entries (each one with
+a different &lt;to&gt; field).
+
+<P>
+
+Please <I>flush</I> the log file output stream as soon as you
+finish writing a line (or multiple lines) to the log file.
+This means that you should call <TT>fflush()</TT> or <TT>f.flush()</TT>
+if you are using C or C++, respectively.  You should be able to
+run the following command and see meaningful output:
+    <PRE>
+    tail -f /yourhome/servant/12312/servant.log</PRE>
+if <TT>/yourhome/servant/12312/servant.log</TT> is a log file.
+
+<P>
+
+It is <B>imperative</B> that you have logging works correctly
+becuase the grader needs to observe messages received and sent
+by each node.  If your logging is not working properly, you
+stand to lose a lot of points (at least 20%).
+
+<P>
+
+It is also <B>imperative</B> that you have "status neighbors"
+(for parts (1) and (2)) and "status files" (for part (2))
+user commands work correctly becuase the grader
+needs to observe the status of all nodes in a reasonable fashion.
+If your "status" user command is not working properly, you
+stand to lose a lot of points (at least 20%).
+
+<P>
+
+You should write error messages into you log file and you may also output
+debugging information there.
+Please begin each debugging lines with <TT>//</TT> (like a
+comment line in C++) and error messages with <TT>**</TT>.
+It is a good idea to use these messages to log the return value of
+major functions so you know the state of your program at a certain
+milestone.  This way, if something goes wrong during grading, you
+can quickly look at your log file and determine what may have gone
+wrong.
+
+<P>
+The log file should be deleted only when a node is started with
+the <TT>-reset</TT> commandline option.
+            </TD>
+        </TR>
+        <TR><TD COLSPAN=3 ALIGN=LEFT>&nbsp;</TD></TR>
+        <!-- Section -->
+        <TR><TD COLSPAN=3 ALIGN=LEFT BGCOLOR="#000000" WIDTH=1200>
+                <FONT COLOR="#ffffff"><A
+                NAME="uoid"><B>Unique Object ID</B></A></FONT>
+            </TD>
+        </TR>
+        <!-- Top Section -->
+        <TR><TD COLSPAN=3 ALIGN=LEFT>
+The UOID (or Unique Object ID) is a 20-byte value that
+uniquely identifies an object.  An object can be a
+message, a file, or anything you want.  It should be
+unique across the whole SERVANT network.
+
+<P>
+
+Since SHA1 has the so-called <I>collision free</I>
+(or, more appropriately, <I>collision unlikely</I>)
+property, we can use SHA1 to generate UOIDs.  The
+idea is that if we feed a unique string to SHA1,
+althought the string can be longer than 20 bytes,
+we can get a <I>unique</I> 20-byte value.  Therefore,
+you can implement a function like the <TT>GetUOID()</TT> function
+below to generate an UOID.  You can easily come up with
+variations of this function to suit your needs.
+  <PRE>
+  #ifndef min
+  #define min(A,B) (((A)>(B)) ? (B) : (A))
+  #endif /* ~min */
+
+  #include &lt;sys/types.h&gt;
+  #include &lt;openssl/sha.h&gt; /* please read <A HREF="openssl.html">this</A> */
+
+  char *GetUOID(
+          char *node_inst_id,
+          char *obj_type,
+          char *uoid_buf,
+          int uoid_buf_sz)
+  {
+      static unsigned long seq_no=(unsigned long)1;
+      char sha1_buf[SHA_DIGEST_LENGTH], str_buf[104];
+
+      snprintf(str_buf, sizeof(str_buf), "%s_%s_%1ld",
+              node_inst_id, obj_type, (long)seq_no++);
+      SHA1(str_buf, strlen(str_buf), sha1_buf);
+      memset(uoid_buf, 0, uoid_buf_sz);
+      memcpy(uoid_buf, sha1_buf,
+              min(uoid_buf_sz,sizeof(sha1_buf)));
+      return uoid_buf;
+  }</PRE>
+
+The <TT>node_inst_id</TT> is the <A HREF="#nodeinstid">node instance ID</A>
+of the calling node.
+The <TT>SHA1(in,size,out)</TT> function
+computes a 20-byte SHA1 hash of the <TT>in</TT> argument and writes the
+result in the <TT>out</TT> argument.
+
+<P>
+
+If you need an UOID for a message, a file, or a soda, you
+can call <TT>GetUOID()</TT> in the following fashion, respectively:
+  <PRE>
+  unsigned char buf[SHA_DIGEST_LENGTH];
+
+  GetUOID(node_inst_id, "msg", buf, sizeof(buf));
+  GetUOID(node_inst_id, "file", buf, sizeof(buf));
+  GetUOID(node_inst_id, "soda", buf, sizeof(buf));</PRE>
+            </TD>
+        </TR>
+        <TR><TD COLSPAN=3 ALIGN=LEFT>&nbsp;</TD></TR>
+        <!-- Section -->
+        <TR><TD COLSPAN=3 ALIGN=LEFT BGCOLOR="#000000" WIDTH=1200>
+                <FONT COLOR="#ffffff"><A
+                NAME="metadata"><B>File Metadata (for Part 2 only)</B></A></FONT>
+            </TD>
+        </TR>
+        <!-- Top Section -->
+        <TR><TD COLSPAN=3 ALIGN=LEFT>
+The file metadata is formatted similarly to <A HREF="#ini">an INI file</A>.
+It must start with a section name of <TT>[metadata]</TT>, followed
+by &lt;CR&gt;&lt;LF&gt;.
+It is then followed by the following keys and their corresponding values
+(<I>in the order specified here</I>):
+
+<UL>
+<LI><B>FileName</B> - name of the file, followed by &lt;CR&gt;&lt;LF&gt;.
+<LI><B>FileSize</B> - size of the file (in bytes), followed by
+    &lt;CR&gt;&lt;LF&gt;.
+<LI><B>SHA1</B> - SHA1 hash of the file (formatted hex string), followed by
+    &lt;CR&gt;&lt;LF&gt;.
+<LI><B>Nonce</B> - a randomly value associated with the file (formatted hex
+string), followed by
+    &lt;CR&gt;&lt;LF&gt;.
+    (This field has the same length as the SHA1 field.)
+<LI><B>Keywords</B> - keywords (separated by space characters), followed by
+    &lt;CR&gt;&lt;LF&gt;.
+    (Turn all letters into lowercase letters before stored them here.)
+<LI><B>Bit-vector</B> - hexstring-encoded (256 characters long)
+    <A HREF="#minifs">bit-vector for the keywords</A>,
+    followed by &lt;CR&gt;&lt;LF&gt;.
+</UL>
+
+Here is an example (&lt;CR&gt;&lt;LF&gt;'s have been left out and the
+<I>backslashes</I> have been inserted for readability):
+
+  <PRE>
+  [metadata]
+  FileName=blondie1.mp3
+  FileSize=474736
+  SHA1=ffd3b197e1c0f0c27e7bdc219f553a3e6b139dfb
+  Nonce=bac9a3247be59ea11a5883df04b80988035430d6
+  Keywords=categories audio mp3 artist blondie \
+    title heart of glass \
+    url http://www.blondie.net/ \
+    additional_keywords debra harry
+  Bit-vector= \
+    110000100000000420020000000000000000000000000000 \
+    100000000000000000200000000000000000010000010004 \
+    000000000004800000000800000000000000000000000000 \
+    000000000000000000100008800000000000000040048400 \
+    000002100000000000000810000000000000200002000200 \
+    0000000000000000</PRE>
+            </TD>
+        </TR>
+        <TR><TD COLSPAN=3 ALIGN=LEFT>&nbsp;</TD></TR>
+        <!-- Section -->
+        <TR><TD COLSPAN=3 ALIGN=LEFT BGCOLOR="#000000" WIDTH=1200>
+                <FONT COLOR="#ffffff"><A
+                NAME="routing"><B>Routing</B></A></FONT>
+            </TD>
+        </TR>
+        <!-- Top Section -->
+        <TR><TD COLSPAN=3 ALIGN=LEFT>
+On messages that require flooding, you must make sure that a
+message is not sent over the same link more than once.
+Let us consider an example using the following graph.
+
+<P>
+
+<DL COMPACT>
+<DT><DD>
+    <DL COMPACT>
+    <DT><DD>
+        <A NAME="figure1">
+        <IMG SRC="routing.gif" ALT="Figure 1">
+                <BR>&nbsp;<BR>
+        <B>Figure 1</B>:
+        Example network connection.
+    </DL>
+</DL>
+
+<P>
+
+Imagine yourself as node 1 in the above diagram. You have direct
+connections to nodes 2, 3, 4, and 5. You
+have reachable hosts at nodes 2 through 5 and 8 through 13.
+
+<OL>
+<LI>Node 99 connects to you and the first message you receive from
+    it is a join request message (function 0xFC) with a message ID of
+    <B><TT>x</TT></B> in the header.  You classify
+    this connection as a <I>temporary</I> connection (shown as a dotted
+    line in Figure 1 above), meaning that the
+    <I>only</I> messages you will send over this connection are join response
+    messages responding to <B><TT>[UOID x]</TT></B>.)
+<LI>Lookup in your message routing table <B><TT>[UOID x]</TT></B>.
+<LI>Lookup failed?  Save <B><TT>[UOID x]</TT></B> in the routing table
+    and record that it was received from node 99 over this
+    temporary connection.
+<LI>Respond with a join response (0xFB), with the UOID field being
+    <B><TT>x</TT></B> to node 99.
+<LI>Send the function 0xFC message to nodes 2, 3, 4, and 5 (<B>not 99</B>).
+<LI>Node 3 will respond with a join response (0xFB), with the UOID field
+    being <B><TT>x</TT></B>.
+<LI>Forward the message to whoever in the routing table that has
+   <B><TT>[UOID x]</TT></B>. Since this message is being
+   <I>routed</I> (i.e., this is a response) and not flooded,
+   there is no need to check
+   if it is a duplicate, as routed messages do not make loops.
+<LI>Do the same thing with responses from 2, 4 and 5.
+<LI>Since 3 thru 5 will also pass the message on to 8 thru 13, you'll also
+    get a 0xFB from them.
+<LI><B>Problem:</B> Node 3 is connected to node 9 which is connected
+    to node 10 which is connected to node 4 which is
+    connected to node 1!  This would not cause a problem.
+    For example, if node 1 receive a message from node 4 with message ID
+    <TT><B>x</B></TT>, it looks up <TT><B>x</B></TT> in its routing table
+    and will be able to find it.
+    Since it's a duplicate message, node 1 drops the message,
+    it does not respond to node 4, and it does not forward it to anyone.
+</OL>
+
+<P>
+
+The above implies that a node should keep message UOIDs in memory
+and have an efficient way to see if a message UOID has been
+seen before.  Efficient here is defined as O(log(n)), where n
+is the number of message UOIDs in your data structure.
+(Please note that O(log(n)) is <I>not</I> required, although it's
+nice to have.)
+In addition, an UOID entry should timeout approximately
+<A HREF="#msglifetime">MsgLifetime</A> seconds after it has been
+inserted into the data structure.  You should devise a way to
+handle this expiration efficiently (although it is not a requirement).
+If you have done something
+to make these operations efficient, please make sure you document
+document them in the <TT>README</TT> file of your submission.
+            </TD>
+        </TR>
+        <TR><TD COLSPAN=3 ALIGN=LEFT>&nbsp;</TD></TR>
+        <!-- Section -->
+        <TR><TD COLSPAN=3 ALIGN=LEFT BGCOLOR="#000000" WIDTH=1200>
+                <FONT COLOR="#ffffff"><A
+                NAME="ttl"><B>TTL</B></A></FONT>
+            </TD>
+        </TR>
+        <!-- Top Section -->
+        <TR><TD COLSPAN=3 ALIGN=LEFT>
+The basic idea here is that a message (or message in our
+case) is stamped with a TTL when it is sent out.
+Then, each host which receives this message decrements the TTL.
+If the TTL is zero, the message is
+not forwarded.
+Your program should work similarly.  Hence, in your project,
+when a NEW message is sent from
+a node, the TTL is set by that node to whatever is indicated
+in its configuration file.
+When the message is received by the next node, the TTL is
+decremented. Then that TTL is checked against the forwarding node's
+TTL (i.e., in its configuration file).
+The lower of the two numbers is placed in the
+outgoing TTL field. If the outgoing TTL is zero, the message is
+not forwarded.
+            </TD>
+        </TR>
+        <TR><TD COLSPAN=3 ALIGN=LEFT>&nbsp;</TD></TR>
+        <!-- Section -->
+        <TR><TD COLSPAN=3 ALIGN=LEFT BGCOLOR="#000000" WIDTH=1200>
+                <FONT COLOR="#ffffff"><A
+                NAME="startup"><B>SERVANT Node Start-up</B></A></FONT>
+            </TD>
+        </TR>
+        <!-- Top Section -->
+        <TR><TD COLSPAN=3 ALIGN=LEFT>
+The executable to bring up a SERVANT node must be named <TT>sv_node</TT>.
+The commandline syntax to start a SERVANT node is:
+
+  <B>
+  <PRE>
+  sv_node [-reset] startup.ini</PRE></B>
+
+Square bracketed items are optional.
+If <B><TT>-reset</TT></B> is specified, you must first reset
+this node to the state as if it has never been started before.
+This includes deleting the <TT>init_neighbor_list</TT> file,
+the log file, all cached and permanent files, etc.
+
+<P>
+
+The <TT><B>startup.ini</B></TT> is a start-up configuration file.
+The file name can be different, but the file name extension
+should be <TT>.ini</TT>.  The format of a <TT>.ini</TT> file
+is described in <A HREF="#ini">a separate section</A>.
+
+<P>
+
+When a node starts up, it can be in one of two general states:
+<I>joining</I> the network or <I>participating</I> in the network.
+It cannot be in both states simultaneously.
+The way a node can tell which state it should be in is by
+looking for the <TT>init_neighbor_list</TT> file in its home
+directory.  If the <TT>init_neighbor_list</TT> file does not
+exist, it must try to join the SERVANT network.  If the
+<TT>init_neighbor_list</TT> file exists, it must participate
+in the SERVANT network.
+
+<P>
+
+If a node is <I>participating</I> in the network, when it
+makes a connection to another node, the first message it
+sends must be a <TT>hello</TT> message.
+
+<P>
+
+An <TT>init_neighbor_list</TT> file must conform to the format
+specified here.  It must be an ASCII text file where each line in
+it has the form <TT>hostname:port</TT>.  Each line is
+terminated by a "\n" or "\r\n".  The following is an example
+of a valid <TT>init_neighbor_list</TT> file:
+
+  <PRE>
+  foo.usc.edu:12311
+  bar.usc.edu:12318</PRE>
+
+<P>
+
+The following keys are defined for the <B><TT>[init]</TT></B> section
+of a start-up configuration file.
+
+<P>
+
+<B>Mandatory Fields</B> (these keys <B>must exist</B>):
+
+<UL>
+<LI><B><A NAME="port">Port</A></B> -
+    The port number to listen on.  Each student will be
+    given a range of port numbers to use.
+<LI><B><A NAME="location">Location</A></B> -
+    The location of this node.  (Ideally, this field can be the
+    MD5/SHA1 hash of the node ID.  But we restrict ourselves to
+    an unsigned 32-bit integer for this project.)
+<LI><B><A NAME="homedir">HomeDir</A></B> -
+    The home directory for this node.
+    If this directory does not exist, your program should exit.
+    This directory must contain a subdirectory named <TT>files</TT>
+    for storing cached and permanent files.
+    If the <TT>files</TT> subdirectory does not exist, your program should
+    create it programmatically.
+</UL>
+
+<B>Optional Fields</B> (if these keys are not specified, the default
+values should be assumed):
+
+<UL>
+<LI><A NAME="logfilename"><B>LogFilename</B></A> -
+    Name of a log file.  This file is assumed to be under <B>the node's
+    home directory</B>.  You should write error messages into this
+    log file instead of printing them to stdout or stderr.
+    The default value is "<TT>servant.log</TT>".
+<LI><A NAME="autoshutdown"><B><A HREF="#autodown">AutoShutdown</A></B></A> -
+    The number of seconds for the node to auto-shutdown after it starts.
+    The default value is 900 (for 15 minutes).
+<LI><B>TTL</B> -
+    The TTL value to be used for all outgoing messages.
+    The default value is 30.
+<LI><B><A NAME="msglifetime">MsgLifetime</A></B> -
+    The lifetime (in seconds) of a message.  Because of the way
+    <A HREF="#routing">routing</A> is done in the SERVANT network,
+    the UOID of all messages must be saved in memory so that duplicate
+    messages can be discarded.  It is unreasonable to keep these UIOD's
+    forever.  Therefore, we assume that a message cannot stay in the
+    network longer than the value specified here.  So, if an UOID has
+    been saved in memory longer than the time specified by this value,
+    the UOID can be discarded.
+    The default value is 30.
+<LI><B><A NAME="msglifetime">GetMsgLifetime</A></B> -
+    The lifetime (in seconds) of a <B>get message</B>.
+    Since file transfer may take a very long time, the UOID of a
+    <B>get message</B> needs to cached in memory longer than other message
+    types.
+    The default value is 300.
+<LI><B>InitNeighbors</B> -
+    The number of neighbors to establish when a node first
+    joins the network.  This value should
+    be used to pick the number of neighbors during
+    the <TT>join</TT> process.
+    The default value is 3.  (A beacon node should ignore this value.)
+<LI><B>JoinTimeout</B> -
+    The maximum amount to wait (in seconds) for the
+    <TT>join response</TT>
+    command.  If this timeout has occurred and if the joining
+    node has not heard from enough nodes (specified by the
+    InitNeighbors key), it must shut itself down.
+    This timeout is also used to timeout a <TT>check</TT> message.
+    The default value is 15.  (A beacon node should ignore this value.)
+<LI><B>KeepAliveTimeout</B> -
+    If a node has not seen <I>any</I> message from a neighbor
+    after this timeout (in seconds) has occurred, it should close its
+    connection to this neighbor.
+    The default value is 60.
+<LI><A NAME="minneighbors"><B>MinNeighbors</B></A> -
+    <!-- Remove this in the future!  Well, may be not. Keep it! -->
+    The minimum number of neighbors a node needs to
+    establish connections with <B>when it comes up</B> and when it's
+    participating in the network.
+    If it cannot connect to this many neighbors, it must
+    delete the <TT>init_neighbor_list</TT> file and rejoin the network
+    (by contacting a <I>beacon</I> node).
+    The default value is 2.  (A beacon node should ignore this value.)
+<LI><A NAME="nocheck"><B>NoCheck</B></A> -
+    If this value is 0, sending of <TT>check</TT> messages is
+    enabled when a non-beacon node loses connection with one of its neighbors.
+    If this value is 1, sending of <TT>cehck</TT> messgaes should be disabled
+    for a non-beacon node.  For a beacon node, it must ignore all
+    <TT>check</TT> messages.
+    The default value is 0.
+    Please note that for grading of part (2), 
+    this value will always be 1 for all nodes.
+<LI><B>CacheProb</B> -
+    When a node forwards a <TT>get response</TT> message from a
+    neighbor, it flips a coin (with this probability of
+    getting a positive outcome) to decide if it should cache
+    a copy of it.  If the result is positive, a copy of the
+    file is stored.
+    The default value is 0.1.
+<LI><B>StoreProb</B> -
+    When a node receives a <TT>store</TT> request from a
+    neighbor, it flips a coin (with this probability of
+    getting a positive outcome) to decide if it should cache
+    a copy of it.  If the result is positive, a copy of the
+    file is stored.
+    (Please note that if a node decides <B>not</B> to keep a copy of a file
+    this way, it should <B>not</B> continue to flood the store request message.)
+    The node where this <TT>store</TT>
+    request was originated ignores this value.
+    The default value is 0.1.
+<LI><B>NeighborStoreProb</B> -
+    When a node originates or receives a <TT>store</TT> request, it asks its
+    neighbors to cache a copy of the file.  For each neighbor,
+    it flips a coin (with this probability of getting a positive
+    outcome) to decide if it should forward the
+    <TT>store</TT> request to the corresponding neighbor.
+    The default value is 0.2.
+<LI><B>CacheSize</B> -
+    An integer value specifying the maximum total storage (in kilobytes) for
+    cached files.
+    The default value is 500.
+    A kilobyte is 1,024 bytes.
+    Please only count file sizes for the <TT>.data</TT> files.
+</UL>
+<P>
+The <A NAME="beacons"><B><TT>[beacons]</TT></B></A> section
+lists beacon nodes.
+When a new node wishes to join the SERVANT network, it should go
+down this list and find a running beacon node to send a join request.
+Keys in this section have the format of <TT>hostname:port</TT>.
+The value for each key should be empty.  For example
+(please replace the 12xxx port numbers with the ones that
+have been assigned to you):
+  <PRE>
+  [beacons]
+  foo.usc.edu:12311=
+  foo.usc.edu:12312=
+  bar.usc.edu:12311=
+  bar.usc.edu:12313=
+  Retry=15</PRE>
+
+The <B>Retry</B> key specifies the amount of time to
+wait (in seconds) for a beacon node before retrying a
+failed connect attempt with another beacon node (see below).
+The default value is 30.
+<P>
+Please note that it is perfectly okay to have additional
+additional keys or sections in a start-up configuration file.
+Your program must not report them as errors.
+<P>
+When a beacon node comes up (it finds itself in the beacons
+list), it must make all other nodes in the beacons list
+its neighbors and need not send out join requests.
+If it cannot make a connection to another beacon, it should
+retry after a timeout period specified by the Retry key
+in the [beacons] section.
+<P>
+One way to think of this is that the beacon nodes form
+a network that is fully connected, always.
+
+<P>
+
+When a regular node comes up, it should only make one attempt
+for each of its initial neighbors.  If it cannot make a
+connection, it should not retry.
+
+<P>
+
+The following is an example of the <TT>start-12312.ini</TT> file.
+  <PRE>
+  [init]
+  Port=12312
+  Location=3134382376
+  HomeDir=/yourhome/servant/12312
+  LogFilename=servant.log
+  AutoShutdown=60
+  TTL=255
+  MsgLifetime=60
+  GetMsgLifetime=600
+  InitNeighbors=3
+  JoinTimeout=5
+  KeepAliveTimeout=7
+  MinNeighbors=2
+  CacheProb=0.1
+  StoreProb=0.1
+  NeighborStoreProb=0.1
+  CacheSize=1000
+
+  [beacons]
+  Retry=15
+  foo.usc.edu:12311=
+  foo.usc.edu:12312=
+  foo.usc.edu:12313=
+  foo.usc.edu:12314=</PRE>
+
+Please note that other than the differences noted here,
+<I>a beacon node behaves the same as a non-beacon node</I>.
+            </TD>
+        </TR>
+        <TR><TD COLSPAN=3 ALIGN=LEFT>&nbsp;</TD></TR>
+        <!-- Section -->
+        <TR><TD COLSPAN=3 ALIGN=LEFT BGCOLOR="#000000" WIDTH=1200>
+                <FONT COLOR="#ffffff"><A
+                NAME="bootstrap"><B>Start a Bunch of Nodes
+                Quickly</B></A></FONT>
+            </TD>
+        </TR>
+        <!-- Top Section -->
+        <TR><TD COLSPAN=3 ALIGN=LEFT>
+If you want to start a bunch of node quickly, you can use
+a shell script to start a few nodes in a batch on the same
+machine.  For example, the following shell script should
+bootstrap into a SERVANT system with 4 nodes on the same
+machine:
+  <PRE>
+  #!/bin/csh -f
+
+  sv_node start-12311.ini &amp;
+  sleep 2
+  sv_node start-12312.ini &amp;
+  sv_node start-12313.ini &amp;
+  sleep 3
+  sv_node start-12314.ini &amp;</PRE>
+It could be the case that these 4 nodes are all beacon nodes
+if the [beacons] section of the .ini files has all of them
+cross listed and these nodes are started on the correct machine.
+(It should be clear that multiple nodes will run on the same
+machine.)
+
+<P>
+
+You might want to think about how to kill all these processes
+to make it easy for yourself to restart your experiment.
+
+<P>
+
+<I>Hint:</I> If a <TT>sv_node</TT> is started in the background,
+it cannot read standard input.  So you might want to feed it
+an empty file as standard input.  For example, if you create an
+empty file and call it <TT>"null"</TT>, you can then do:
+  <PRE>
+  sv_node start-12311.ini &lt; null &amp;</PRE>
+
+<P>
+
+It is <B>not</B> a requirement that you are able to start your
+system this way.  Only if you get tired of starting
+things in different window and want to do thing faster,
+you can do it this way.  Also, you probably can only do
+this when everything is running smoothly.
+            </TD>
+        </TR>
+        <TR><TD COLSPAN=3 ALIGN=LEFT>&nbsp;</TD></TR>
+        <!-- Section -->
+        <TR><TD COLSPAN=3 ALIGN=LEFT BGCOLOR="#000000" WIDTH=1200>
+                <FONT COLOR="#ffffff"><A
+                NAME="minifs"><B>Mini File System
+                (for Part 2 only)</B></A></FONT>
+            </TD>
+        </TR>
+        <!-- Top Section -->
+        <TR><TD COLSPAN=3 ALIGN=LEFT>
+In order to manage files and metadata for a node, you must
+implement a simple mini file system specified here.
+
+<H4>Data Files</H4>
+
+<BLOCKQUOTE>
+    Each data file must be stored as is.  You must use numeric
+    file name locally and the file name extension must be "data".
+    You must store the metadata of a file with the same name (with
+    a file name extension of "meta").  For example, the first time
+    you want to store a file,  you must store the file as "<TT>1.data</TT>"
+    and the meta of this file must be stored in "<TT>1.meta</TT>".
+    You must never reuse a file name, until a node has been reset.
+
+    <P>
+
+    You need a way to keep track of what file number to use the next
+    time you want to store a file, and this information must be persistent
+    even if your node crashes or get restarted.
+</BLOCKQUOTE>
+
+<H4><A NAME="indexfiles">Index Files</A></H4>
+
+<BLOCKQUOTE>
+    In order to speed up search, you must use relatively fast
+    index structures.  To speed up keyword searches, you <B>must</B>
+    use a linear list of <A HREF="#bitvec">bit-vectors</A>.
+    To speed up name searches, you should use a
+    <A HREF="http://www.nist.gov/dads/HTML/binarySearchTree.html">binary
+    search tree</A> index structure (file names as keys).
+    To speed up SHA1 hash searches, you should also use a
+    <A HREF="http://www.nist.gov/dads/HTML/binarySearchTree.html">binary
+    search tree</A> index structure (SHA1 values as keys).
+    Each node in a index structure references a data file by
+    file name.
+
+    <P>
+
+    All 3 index structures must have a disk image so that after
+    a node restarts (after a crash or a shutdown), it can
+    reconstruct the in-memory index structures in a timely fashion.
+    Therefore,  you
+    must provide 3 different <I>index files</I> in the home
+    directory of each node.  The file names must be
+    "<TT>kwrd_index</TT>", "<TT>name_index</TT>", and
+    "<TT>sha1_index</TT>".  These files are disk images of
+    the corresponding memory index structures.
+    The "<TT>name_index</TT>" and "<TT>sha1_index</TT>" must be
+    <B>sorted</B>.  (Please document the format of these files in your
+    README file.)
+
+    <P>
+
+    There is no efficiency requirement here, but you should think
+    about how to do this in <I>O(n)</I>,
+    where <I>n</I> is the number of nodes in your data structure.
+    (Please note that inserting a single node into a binary search tree
+    is an <I>O(log(n))</I> operation.  So, inserting <I>n</I> nodes
+    into an initially empty binary search tree costs
+    <I>O(n log(n))</I>.)
+    If you have done something to make these operations efficient,
+    please make sure you document document them in the <TT>README</TT> file
+    of your submission.
+
+    <P>
+
+    Since there is no efficiency requirement here, you do <B>not</B>
+    have to use binary serach tree index structures for filename
+    and SHA1 indices.  You can simply use a <B>sorted linked lists</B>.
+    It should be fairly straight-forward to externalize such a list to
+    a file.
+</BLOCKQUOTE>
+
+<H4><A NAME="bitvec">Bit-vector</A></H4>
+
+<BLOCKQUOTE>
+    You are required to use a simplified
+    <A HREF="http://www.nist.gov/dads/HTML/bloomFilter.html">Bloom Filter</A>
+    to manage <I>keywords</I> for contents that are stored/cached at a node.
+
+    <P>
+
+    In our simplified Bloom Filter, we will use two hash functions
+    and a bit-vector of length <I>2n</I> bits.  Each hash function maps
+    a keyword to a bit position in the bit-vector.
+    Every file is associated with a bit-vector and a set of keywords.
+    For each keyword, two bits in the bit-vectors will be
+    turned on (set to 1).  (The positions of the bits are uniquely
+    determined by the hash functions and the keyword.)
+    So, if a file is associated with <I>j</I> keywords,
+    at most <I>2j</I> bits of the bit-vector will be turned on.
+    It's possible that multiple keywords can be mapped to the same bit.
+
+    <P>
+
+    The two hash functions we will use for a keyword <I>k</I> are:
+    <BLOCKQUOTE>
+        SHA1(k) <B>mod</B> n
+    </BLOCKQUOTE>
+    and
+    <BLOCKQUOTE>
+        MD5(k) <B>mod</B> n
+    </BLOCKQUOTE>
+    If <I>n</I> is a power of two and equals <I>2^m</I> (where the <TT>^</TT>
+    is the exponentiation operator), then the above will be equivalent to
+    taking the trailing <I>m</I> bits from SHA1(k) and the trailing
+    <I>m</I> bits from MD5(k).  In our case, the bit-vector is <I>2n</I>
+    bits long.  <I>SHA1(k) <B>mod</B> n</I> determines which bit in the leading
+    <I>n</I> bits (or the <I>left half</I> of the bit-vector)
+    should be on while <I>MD5(k) <B>mod</B> n</I> determines
+    which bit in the trailing <I>n</I> bits (or the <I>right half</I> of the
+    bit-vector) should be on.
+
+    <P>
+
+    When you perform a keyword search, you should generate a bit-vector
+    based on the search keywords and perform a <I>bit-wise AND</I>
+    with the bit-vector of each file.
+    If the left half of the resulting bit-vector contains all zeros
+    <B>or</B>
+    the right half of the resulting bit-vector contains all zeros,
+    then there is no common keywords between the search keywords and the
+    keywords stored for a given file.  If the left half of the resulting
+    bit-vector is not a vector of zeros, <B>and</B> the right half of the
+    resulting bit-vector is not a vector of zeros,
+    then it is <B>possible</B> that there may be
+    keyword match (since it's possible that multiple keywords can be
+    mapped to the same bit).  In this case, you must compare all search
+    keywords with file keywords and see if there is a true keyword match.
+
+    <P>
+
+    For this project, please use 512 as the value of <I>n</I>.
+    Also, you must convert all uppercase letters in keywords to lowercase
+    letters before you computer a bit-vector.
+
+    <P>
+
+    <A NAME="bitvecex">Bit-vector example</A> (please refer to the example
+    <A HREF="#metadata">above</A>):
+    <BLOCKQUOTE>
+        Let's take the keyword "<TT>categories</TT>" as an example.
+        The SHA1 value of "<TT>categories</TT>" is:
+        <BLOCKQUOTE>
+            50b9e78177f37e3c747f67abcc8af36a44f218f5
+        </BLOCKQUOTE>
+        whose trailing 9 bits is "<TT>0f5</TT>", which
+        equals 245 in decimal.
+        <P>
+        The MD5 value of "<TT>categories</TT>" is:
+        <BLOCKQUOTE>
+            b0b5ccb4a195a07fd3eed14affb8695f
+        </BLOCKQUOTE>
+        whose trailing 9 bits is "<TT>15f</TT>", which
+        equals 351 in decimal.
+        <P>
+        Since 245 (the SHA1 portion of the hash) indexes the
+        left half of the bit-vector, it should correspond to
+        bit 757 (=245+512) of the bit-vector.
+        Turning on bits 757
+        and 351 in a 1024-bit bit-vector,
+        we have:
+        <PRE>
+    000000000000000000000000000000000000000000000000 \
+    000000000000000000200000000000000000000000000000 \
+    000000000000000000000000000000000000000000000000 \
+    000000000000000000000000800000000000000000000000 \
+    000000000000000000000000000000000000000000000000 \
+    0000000000000000</PRE>
+        Please note that 351=87*4+3.  Therefore, there are 87 zero
+        hex digits after the "8" above.  (Each hex digit can be one of
+        0, 1, 2, ..., 9, a, b, c, d, e, f.)  Please also note
+        that 757=189*4+1; therefore,
+        there are 189 hex digits after the "2" above.
+        <P>
+        Please note that bit index starts from the right.  So, to turn
+        bit 0 on in a 1024-bit bit-vector, we have:
+        <PRE>
+    000000000000000000000000000000000000000000000000 \
+    000000000000000000000000000000000000000000000000 \
+    000000000000000000000000000000000000000000000000 \
+    000000000000000000000000000000000000000000000000 \
+    000000000000000000000000000000000000000000000000 \
+    0000000000000001</PRE>
+    </BLOCKQUOTE>
+    <A HREF="bitvec/">Additional bit-vector examples</A> have been added.
+</BLOCKQUOTE>
+
+<P>
+
+<H4>Directory Structure</H4>
+
+<BLOCKQUOTE>
+    Your node must use the following directory structure:
+    <PRE>
+    $(HomeDir)
+      +- init_neighbor_list
+      +- kwrd_index
+      +- name_index
+      +- sha1_index
+      +- ... (other files you want to keep)
+      +- files
+           +- 1.data
+           +- 1.meta
+           +- 2.data
+           +- 2.meta
+           +- ...</PRE>
+    where <TT>files</TT> is a subdirectory containing the
+    actual data files and the corresponding metadata files.
+</BLOCKQUOTE>
+            </TD>
+        </TR>
+        <TR><TD COLSPAN=3 ALIGN=LEFT>&nbsp;</TD></TR>
+        <!-- Section -->
+        <TR><TD COLSPAN=3 ALIGN=LEFT BGCOLOR="#000000" WIDTH=1200>
+                <FONT COLOR="#ffffff"><A
+                NAME="cmdline"><B>Commandline Interface</B></A></FONT>
+            </TD>
+        </TR>
+        <!-- Top Section -->
+        <TR><TD COLSPAN=3 ALIGN=LEFT>
+The commandline interface mimics that of the <TT>ftp</TT>
+program.  Here are some details.
+<UL>
+<LI>The following command prompt should be used:
+  <PRE>
+  servant:PORT&gt; </PRE>
+    where <TT>PORT</TT> is the port number of the node.
+    There should be a space character after the prompt.
+<P>
+<LI>To get <A NAME="status">status</A> of the SERVANT network and write
+    it to an external file, the user can enter one of the following:
+  <PRE>
+  status neighbors &lt;ttl&gt; &lt;extfile&gt;
+  status files &lt;ttl&gt; &lt;extfile&gt;</PRE>
+    where
+    <TT>&lt;ttl&gt;</TT> is the TTL value that should go into the common
+    message header, and <TT>&lt;extfile&gt;</TT> is the name of an external
+    file (relative to the current working directory if it does not begin
+    with a <TT>/</TT> character).  By the way, if you really want to
+    know where the current working directory is for your node, you
+    can call <TT>getcwd()</TT>.  But normally, you shouldn't have to
+    know, unless you want to change your program's current working
+    directory programmatically.  This is really not recommended.
+    <P>
+    A <TT>&lt;ttl&gt;</TT> value of <B>zero</B> means not to flood the status
+    message (i.e., should only attempts to get status for the node where the
+    command was issued).
+    <P>
+    For the <TT>status neighbors</TT> command, the format of the
+    external file should be in a form that can be read by
+    <A HREF="http://www.isi.edu/nsnam/nam/"><TT>nam</TT></A>.
+    A sample of a 2-node network (named <TT>status.out</TT>)
+    <A HREF="status.out">is provided here</A>.
+    To display the network, one can simply do:
+  <PRE>
+  ~csci551/nam status.out</PRE>
+    The TA has written
+    <A HREF="nam-format.html">some notes about the <TT>nam</TT>
+    file format</A>.
+    <P>
+    For the <TT>status files</TT> command, the external file should be
+    a listing of the responses received.  For each response, you should
+    list the Hostname and Hostport of the reporting host, the number
+    of files it has, and the complete metadata for each of the files.
+    For example, you may have (please replace the "..." with the correct
+    information in the status response message):
+  <PRE>
+  nunki.usc.edu:12345 has 2 files
+  [metadata]
+  FileName=blondie1.mp3
+  FileSize=1874
+  SHA1=8ae005585be9c44ef1910d25dd6f8da58c432ab5
+  Nonce=...
+  Keywords=categories audio mp3 artist blondie
+  Bit-vector=...
+  [metadata]
+  FileName=usctommy.gif
+  FileSize=1689
+  SHA1=11cddf2a0378d6a892cf43198847ce379e85d149
+  Nonce=...
+  Keywords=usc tommy trojan gif
+  Bit-vector=...</PRE>
+You do not <I>have to</I> output the number of files a node has.  
+Alternatively, you can replace the first line in the above output
+with:
+  <PRE>
+  nunki.usc.edu:12345 has the following files</PRE>
+If the node has zero file, you should output:
+  <PRE>
+  nunki.usc.edu:12345 has no file</PRE>
+If the node has exactly one file, you should output:
+  <PRE>
+  nunki.usc.edu:12345 has the following file</PRE>
+<P>
+<LI>To <A NAME="user_store">store</A> file <TT>foo</TT> into the SERVANT,
+    the user should enter:
+  <PRE>
+  store foo &lt;ttl&gt; [tag1="value1" tag2="value2" ...]</PRE>
+    where
+    <TT>&lt;ttl&gt;</TT> is the TTL value that should go into the common message
+    header.
+    A <TT>&lt;ttl&gt;</TT> value of <B>zero</B> means not to flood the store
+    message (i.e., should only attempts to store the file in the node on which
+    the command was issued).
+    <P>
+    If <TT>foo</TT> begins with the <TT>/</TT> character, <TT>foo</TT>
+    specifies an absolute path.  Otherwise, <TT>foo</TT> is relative
+    to the user's current working directory.  (If you really want to
+    know where the current working directory is for your node, you
+    can call <TT>getcwd()</TT>.  But normally, you shouldn't have to
+    know, unless you want to change your program's current working
+    directory programmatically.  This is really not recommended.)
+    <P>
+    The tags and values are the metadata.  They should provide
+    useful information.  For example, you can enter:
+  <PRE>
+  store blondie1.mp3 30 \
+      categories="audio mp3" \
+      artist="Blondie" \
+      title="Heart of Glass" \
+      url="http://www.blondie.net/" \
+      additional_keywords="debra harry"</PRE>
+    The tag names are arbitrary.
+    Both tag names and values must be treated as searchable keywords.
+    <P>
+<LI>To search for a file with an exact file name of <TT>foo</TT>,
+    the user should enter:
+  <PRE>
+  search filename=foo</PRE>
+    There should be no blank characters around the equal sign.
+    To search for a file with an exact SHA1 hash of <TT>bar</TT>,
+    the user should enter:
+  <PRE>
+  search sha1hash=bar</PRE>
+    There should be no blank characters around the equal sign.
+    <TT>bar</TT> must be 40 characters long
+    (since you cannot enter a binary value using the keyboard, you
+    must hexstring-encode the 20-byte hash value and enter the
+    hexstring).
+    To search for a file with keywords <TT>key1</TT>,
+    <TT>key2</TT>, <B>and</B> <TT>key3</TT>, the user should enter:
+  <PRE>
+  search keywords="key1 key2 key3"</PRE>
+    There should be no blank characters around the equal sign.
+    The double quotation marks are mandatory unless there is only
+    one keyword.
+    <P>
+    Please note that all searches are case-insensitive.
+    One way to
+    do this is to convert everything to upper (or lower) case.
+    For this project, please convert everyting to lower case.
+<P>
+<LI>Responses to a search request should be presented as follows.
+    A response should start with a number followed by its metadata.
+    The number is to be used by the user to identify a file.
+    Here is an example:
+  <PRE>
+  [1] FileID=02adefc1dfc97a082fa18a5ef1e8c487259b7fb4
+      FileName=foo
+      FileSize=123
+      SHA1=b83a758fecbefcd3ea547fbf0f9a97eba0ea984c
+      Nonce=01b7a1bd6f169dde22518a865ab2f44c70fcab82
+      Keywords=key1 key2 key3
+  [2] FileID=45929c03a7c84687a73543cc348484edc3829496
+      FileName=bar
+      FileSize=4567
+      SHA1=6b6c5636c484d47599d20191c3023b8a29b2fe11
+      Nonce=fe1834fdf8cd7356ca11e0c77ac38d387e228f94
+      Keywords=key4 key5
+  [3] ...</PRE>
+    When the user presses <TT>^C</TT> (<TT>Control-c</TT>)
+    on the keyboard, the
+    displaying of search results is terminated (although
+    the node may be receiving more search results) and
+    a command prompt should be displayed.
+<P>
+<LI>To <A NAME="user_get">retrieve</A> the 2nd file listed in the previous
+    search response, a user should enter:
+  <PRE>
+  get 2 [&lt;extfile&gt;]</PRE>
+  <P>
+  A copy of the retrieved file should be saved into the
+  current working directory so that the user can access it.
+  (If you really want to
+  know where the current working directory is for your node, you
+  can call <TT>getcwd()</TT>.  But normally, you shouldn't have to
+  know, unless you want to change your program's current working
+  directory programmatically.  This is really not recommended.)
+  If <TT>&lt;extfile&gt;</TT> is not specified,
+  the filename to use should be the same as
+  FileName in the file metadata.  If such a file already exists,
+  you should ask the user if the file should be replaced.
+  <P>
+  Please note that a <TT>get</TT> command should not be allowed
+  if it does not immediately
+  follow a <TT>search</TT> or a <TT>get</TT> command.
+<P>
+<LI>To <A NAME="user_delete">delete</A> a file named <TT>foo</TT>,
+    a user should enter:
+  <PRE>
+  delete FileName=foo SHA1=6b6c... Nonce=fe18...</PRE>
+    with the appropriate SHA1 hash value and nonce for the file.
+    There should be no blank characters around the equal signs.
+  <P>
+  Upon receiving this user command, the node should check if it
+  has a <I>one-time password</I> for this file.  It is does,
+  it should simply create a delete message and flood it to the
+  whole network.  If it does <B>not</B> have the corresponding
+  password, it should prompt the user 
+  to see if it is okay to send a delete message based on
+  the random password as follows:
+  <PRE>
+  No one-time password found.
+  Okay to use a random password [yes/no]? </PRE>
+  If the user enters anything that starts with the letter "y",
+  it should generate a random 20-byte password, create a delete
+  message and flood it to the whole network.
+<P>
+<LI>To <A NAME="shutdown">shutdown</A> the node, a user should enter:
+  <PRE>
+  shutdown</PRE>
+    Upon receiving this user command, the node should send itself a
+    <TT>SIGTERM</TT> signal by calling <TT>kill()</TT>.
+    The node should subsequently free up all resources and shutdown.
+</UL>
+
+<P>
+
+The commandline interface must not allow another command to run
+if it is waiting for response messages.  Messages that have responses are
+<B>status</B>, <B>search</B>, and <B>get</B>.
+The user can interrupt (and terminate) these commands by
+pressing <TT>^C</TT> (<TT>Control-c</TT>) on the keyboard
+before these commands are completed.
+<TT>^C</TT> (<TT>Control-c</TT>) should never cause your
+program to terminate.
+            </TD>
+        </TR>
+        <TR><TD>&nbsp;</TD></TR>
+        <!-- Section -->
+        <TR><TD COLSPAN=3 ALIGN=LEFT BGCOLOR="#000000" WIDTH=1200>
+                <FONT COLOR="#ffffff"><A
+                NAME="ini"><B>INI File Format</B></A></FONT>
+            </TD>
+        </TR>
+        <!-- Top Section -->
+        <TR><TD COLSPAN=3 ALIGN=LEFT>
+The basic format of a <TT>.ini</TT> file is as follows:
+  <PRE>
+  [section1]
+  key11=value11
+  key12=value12
+
+  [section2]
+  key21=value21
+  key22=value22</PRE>
+If there are duplicate sections within the same file, the first one
+should be honored and the rest should be ignored.
+
+If there are duplicate keys within the same section, the first one
+should be honored and the rest should be ignored.
+
+<P>
+
+Leading and trailing blank characters (&lt;SPACE&gt;, &lt;TAB&gt;,
+&lt;CR&gt;, and &lt;LF&gt;) in section names, keys, and values
+must be removed.  There is one way to include leading and trailing
+blanks in a value.  This can be done with a pair of matching single
+or double quotation marks.  In this case, the quotation marks should
+be removed, but what's between the quotation marks should not be touched.
+For example,
+  <PRE>
+  foo = " bar "</PRE>
+is <I>not</I> the same as
+  <PRE>
+  foo =   bar  </PRE>
+This is because, in the first case, the value string is of length 5
+(<I>not</I> 7) and in the second case, the value string is of length 3.
+Furthermore, the second case is identical to:
+  <PRE>
+  foo=bar</PRE>
+<P>
+
+If the first character of a line is a semi-colon,
+the line is a comment and should be ignored.
+Blank lines should also be ignored.
+
+<P>
+
+In general, section names and keys should be treated as if
+they are case-insensitive.
+Also, the orders in which keys appear in a section should
+not matter, and the order in which section names appear in an INI
+file should not matter.
+            </TD>
+        </TR>
+        <TR><TD COLSPAN=3 ALIGN=LEFT>&nbsp;</TD></TR>
+        <!-- Section -->
+        <TR><TD COLSPAN=3 ALIGN=LEFT BGCOLOR="#000000" WIDTH=1200>
+                <FONT COLOR="#ffffff"><A
+                NAME="compiling"><B>Compiling</B></A></FONT>
+            </TD>
+        </TR>
+        <!-- Top Section -->
+        <TR><TD COLSPAN=3 ALIGN=LEFT>
+Please use a <TT>Makefile</TT> so that when the grader simply enters:
+    <PRE>
+    make</PRE>
+an executable named <TT>sv_node</TT> is created.
+<P>
+Please make sure that your submission conforms to
+<A HREF="../makefile.html#requirements">other
+general compilation requirements</A>
+and <A HREF="../makefile.html#readme">README requirements</A>.
+            </TD>
+        </TR>
+        <TR><TD COLSPAN=3 ALIGN=LEFT>&nbsp;</TD></TR>
+        <!-- Section -->
+        <TR><TD COLSPAN=3 ALIGN=LEFT BGCOLOR="#000000" WIDTH=1200>
+                <FONT COLOR="#ffffff"><A
+                NAME="openssl"><B>Openssl</B></A></FONT>
+            </TD>
+        </TR>
+        <!-- Top Section -->
+        <TR><TD COLSPAN=3 ALIGN=LEFT>
+The <TT>openssl</TT> package can also be used to compute
+an <A NAME="sha1">SHA1</A> hash value from a memory buffer.
+
+<P>
+
+To use openssl on <TT>nunki.usc.edu</TT>,
+please see the <A HREF="openssl.html">additional notes on <TT>openssl</TT></A>.
+<I>(Please note that this is different from warmup project #1.
+Please do <B>not</B> use <TT>/usr/lsd/openssl/default-0.9.7g</TT>
+or <TT>/usr/lsd/openssl/default</TT>.)</I>
+
+<P>
+
+Additional information about the SHA1 algorithm can be
+found at <A HREF="http://www.openssl.org/docs/crypto/sha.html">
+http://www.openssl.org/docs/crypto/sha.html</A>.
+
+<P>
+
+The <TT>openssl</TT> program can also be used to generate
+random numbers.  To generate a 1024-byte random number, you
+can use:
+  <PRE>
+  openssl rand 1024</PRE>
+To generate a 20-byte random number and format it into
+a hexstring, you can use:
+  <PRE>
+  openssl rand 256 | openssl sha1</PRE>
+Similarly, to generate a 16-byte random number and format it into
+a hexstring, you can use:
+  <PRE>
+  openssl rand 256 | openssl md5</PRE>
+Please note that invoking <TT>openssl</TT> using <TT>popen()</TT>
+is a very expensive operation.  So, for frequently needed
+<TT>openssl</TT> operations, you should call the corresponding
+<TT>openssl/sha1</TT> functions directly and link your code
+to the <TT>openssl/crypto</TT> library.
+            </TD>
+        </TR>
+        <TR><TD COLSPAN=3 ALIGN=LEFT>&nbsp;</TD></TR>
+        <!-- Section -->
+        <TR><TD COLSPAN=3 ALIGN=LEFT BGCOLOR="#000000" WIDTH=1200>
+                <FONT COLOR="#ffffff"><A NAME="getfile">
+                <B>Additional Notes on File Retrieval (for Part 2 only)</B></A>
+                </FONT>
+            </TD>
+        </TR>
+        <!-- Top Section -->
+        <TR><TD COLSPAN=3 ALIGN=LEFT>
+<UL>
+<LI>Before you flood a GET message, you should use the <TT>FileID</TT>
+    to determine if the current node has the file.  If it does,
+    you should not flood a GET message.  In this case, if
+    the existing file is in the cache space,
+    its status should be changed so that it is <I>"moved"</I> to the permanent
+    space (you should also do whatever adjustments that are necessary).
+<P>
+<LI><A NAME="nospace">When</A>
+    a node successfully gets a file but there is <B>not</B> enough
+    space in its filesystem, it should discard the file and
+    print an error message on the console.  In this case, a copy of
+    the file should <I>not</I> be placed in the node's current working
+    directory.  The idea here is that <I>"you may not get this file if
+    you don't server this file"</I>.
+    (If you really want to
+    know where the current working directory is for your node, you
+    can call <TT>getcwd()</TT>.  But normally, you shouldn't have to
+    know, unless you want to change your program's current working
+    directory programmatically.  This is really not recommended.)
+<P>
+<LI><A NAME="hasspace">When</A>
+    a node successfully gets a file and there is enough space in its
+    filesystem and an identical file (i.e., identical filename, SHA1,
+    and nonce) already exists in the mini filesystem,
+    in addition to placing a copy of the file in the node's current working
+    directory, the following should happen.
+    <P>
+    If the existing file is in the permanent space, then you are done.
+    <P>
+    If the existing file is in the cache space,
+    its status should be changed so that it is <I>"moved"</I> to the permanent
+    space (you should also do whatever adjustments that are necessary).
+</UL>
+            </TD>
+        </TR>
+        <TR><TD COLSPAN=3 ALIGN=LEFT>&nbsp;</TD></TR>
+        <!-- Section -->
+        <TR><TD COLSPAN=3 ALIGN=LEFT BGCOLOR="#000000" WIDTH=1200>
+                <FONT COLOR="#ffffff"><A
+                NAME="testdata"><B>Test Data</B></A></FONT>
+            </TD>
+        </TR>
+        <!-- Top Section -->
+        <TR><TD COLSPAN=3 ALIGN=LEFT>
+The test data used to test <A HREF="testcases/p1.html">part (1)</A>
+is available.
+
+<P>
+
+The test data used to test <A HREF="testcases/p2.html">part (2)</A>
+is also available.
+
+<P>
+
+Please do <B>not</B> use the port numbers in the testdata.
+Please only use ports that are assigned to you.
+            </TD>
+        </TR>
+        <TR><TD COLSPAN=3 ALIGN=LEFT>&nbsp;</TD></TR>
+        <!-- Section -->
+        <TR><TD COLSPAN=3 ALIGN=LEFT BGCOLOR="#000000" WIDTH=1200>
+                <FONT COLOR="#ffffff"><B>Project Report</B></FONT>
+            </TD>
+        </TR>
+        <!-- Top Section -->
+        <TR><TD COLSPAN=3 ALIGN=LEFT>
+In the <TT>README</TT> file which you will submit, please include
+a description of your program flow and
+any major design decisions you have made (e.g., how many threads
+you have and what do they do).  Please do not repeat anything
+that is already in this spec.
+<P>
+You are strongly encourage to have good comments in your code.
+            </TD>
+        </TR>
+        <TR><TD COLSPAN=3 ALIGN=LEFT>&nbsp;</TD></TR>
+        <!-- Section -->
+        <TR><TD COLSPAN=3 ALIGN=LEFT BGCOLOR="#000000" WIDTH=1200>
+                <FONT COLOR="#ffffff"><A
+                NAME="grading"><B>Grading Guidelines</B></A></FONT>
+            </TD>
+        </TR>
+        <!-- Section Content -->
+        <TR><TD COLSPAN=3 ALIGN=LEFT>
+<A HREF="f1-grading.txt">Part (1) grading guidelines</A> has been made
+available.
+<!--
+Part (1) grading guidelines is not available yet.
+  -->
+
+<P>
+
+<A HREF="f2-grading.txt">Part (2) grading guidelines</A> has been made
+available.
+<!--
+Part (2) grading guidelines is not available yet.
+  -->
+
+<P>
+
+Please do <B>not</B> use the port numbers in the grading guidelines.
+Please only use ports that are assigned to you.
+Your code is suppose to work with any port numbers above 1024.
+Your code must <B>not</B> check if the port numbers are assigned
+to you because your code needs to work with the (unknown) port numbers
+used during grading.
+
+<P>
+
+Please run the scripts in the grading guidelines on <TT>nunki.usc.edu</TT>.
+It is possible that there are bugs in the guidelines.  If you find
+bugs, please let the instructor know as soon as possible.
+
+<P>
+
+Finally, the grading guidelines is the <B>only</B> grading procedure
+we will use to grade your program.  No other grading procedure will be used.
+We may change testing data for grading and may change the commands to
+match the data.  (We may make minor changes if we discover bugs in the
+script or things that we forgot to test.)  It is strongly recommended
+that you run your code through the scripts in the grading guidelines.
+            </TD>
+        </TR> 
+        <TR><TD>&nbsp;</TD></TR>
+        <!-- Section -->
+        <TR><TD COLSPAN=3 ALIGN=LEFT BGCOLOR="#000000" WIDTH=1200>
+                <FONT COLOR="#ffffff"><A
+                NAME="misc"><B>Miscellaneous</B></A></FONT>
+            </TD>
+        </TR>
+        <!-- Top Section -->
+        <TR><TD COLSPAN=3 ALIGN=LEFT>
+<UL>
+<LI>You are required to use
+    <A HREF="http://www2.its.strath.ac.uk/courses/c/subsubsection3_14_4_1.html#SECTION00014410000000000000">
+    <I>separate compilation</I></A>
+    to compile your source code.  You must divide your source code into
+    separate source files in a logical way.
+    You also must <B>not</B> put the bulk of your code in header files!
+<LI>A SERVANT node must be implemented as a <I>single process</I>.
+    <!-- For your multi-threading needs, you must use the pthreads library. -->
+    If you are not familiar with pthreads,
+    you should read the <I>Pthreads Programming</I> book mentioned
+    in the recommanded textbook section of the
+    <A HREF="../description.html#textbooks">Course Description</A>.
+<LI>Your must not do busy-wait!  If you run <TT>"top"</TT> from the
+    commandline and you see that your program is taking up one of the top
+    spots in CPU percentages and show high percentages, this is considered
+    busy-wait.  You will lose a lot of points if your program does busy-waiting.
+    <P>
+    It's quite easy to find the offending code.  If you run your program
+    from the debugger, wait a few seconds, then type &lt;Cntrl+C&gt;.
+    Most likely, your program will break inside your busy-waiting loop!
+    An easy fix is to call <TT>select()</TT> to sleep for 100 millisecond
+    before you loop again.
+<LI>Some people are having trouble with <TT>connect()</TT>.
+    <A HREF="connect.html">Here's some information</A> that may help you.
+    <P>
+    Please note that you if you fail to connect to another node for
+    whatever reason (e.g., the node is not up), you must get a new socket
+    (by calling <TT>socket()</TT>) the next time you try to connect.
+<LI>Some papers about other peer-to-peer systems are in the
+    <A HREF="../papers.html#overlay">class reading list</A>.
+<LI>For part (2), the maximum size of a memory buffer is limited to
+    <B>8,192 bytes</B>.  There is no limit for part (1).
+<LI>If you don't have a favorite binary search tree,
+    you might want to checkout <A HREF="libavl/">GNU's libavl</A>.
+<LI>If you don't have a favorite INI file parser or a string based
+    hash table data structure,
+    you might want to checkout <A HREF="iniparser/">Nicolas Devillard's
+    iniparser</A> (and modify it if necessary).
+<LI>If you have <TT>.nfs*</TT> files you cannot remove, please see
+    <A HREF="dotnfs.html">notes on <TT>.nfs</TT> files</A>.
+</UL>
+            </TD>
+        </TR>
+        <TR><TD COLSPAN=3 ALIGN=LEFT>&nbsp;</TD></TR>
+        </TABLE>
+    </TD>
+</TR>
+</TABLE>
+
+<HR>
+[<I>Last updated Sat Dec 24 2011</I>] &nbsp;&nbsp;
+[<I>Please see <A
+HREF="../copyright.html">copyright</A> regarding copying.</I>]
+
+<!-- @(#)$Id: final.html,v 1.1 2011/12/25 06:12:06 william Exp $ -->
+
+</BODY>
+</HTML>

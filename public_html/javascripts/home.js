@@ -1,0 +1,2 @@
+$(document).ready(function(){$("#intro > ul > li > .imgholder").hide();ele=$("#intro > ul > li > h2");ele.mouseenter(function(){$(this).next().show("slow")}).mouseleave(function(){$(this).next().hide("slow")});var a=$("#footer a img");$(a).mouseenter(function(){var a=$(this).attr("val");$(this).qtip({content:a,style:{name:"light",tip:{corner:"bottomMiddle"}},position:{corner:{target:"topmiddle",tooltip:"bottomMiddle"},adjust:{x:25,y:0,resize:!0,scroll:!0}},show:{when:!1,ready:!0},hide:!1})}).mouseleave(function(){$(this).data("qtip")&&
+$(this).qtip("destroy")})});
